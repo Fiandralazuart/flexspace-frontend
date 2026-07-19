@@ -1,10 +1,10 @@
 import type { LucideIcon } from "lucide-react";
 import {
 	LayoutDashboard,
+	Building,
 	Building2,
 	CalendarDays,
 	Package,
-	Cpu,
 	Users,
 	ChartColumn,
 	Settings,
@@ -23,6 +23,12 @@ export const adminSidebar: SidebarItem[] = [
 		label: "Dashboard",
 		href: "/admin/dashboard",
 		icon: LayoutDashboard,
+	},
+	{
+		key: "buildings",
+		label: "Buildings",
+		href: "/admin/buildings",
+		icon: Building,
 	},
 	{
 		key: "spaces",
