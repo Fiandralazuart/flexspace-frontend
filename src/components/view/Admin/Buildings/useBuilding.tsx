@@ -13,7 +13,6 @@ const useBuilding = () => {
 			search,
 		});
 
-		console.log(result.data.data);
 		return result.data.data;
 	};
 

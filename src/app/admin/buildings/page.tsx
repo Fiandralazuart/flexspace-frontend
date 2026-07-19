@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import LoginView from "@/components/view/Auth/login";
 import Building from "@/components/view/Admin/Buildings";
 
 

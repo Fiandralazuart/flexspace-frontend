@@ -22,8 +22,6 @@ const handler = NextAuth({
 			},
 
 			async authorize(credentials) {
-				console.log("Credentials:", credentials);
-
 				if (!credentials) return null;
 
 				try {
@@ -31,9 +29,6 @@ const handler = NextAuth({
 						email: credentials.email as string,
 						password: credentials.password as string,
 					});
-
-					console.log("Login Result:", result.data);
-
 					const { token, user } = result.data.data;
 
 					return {

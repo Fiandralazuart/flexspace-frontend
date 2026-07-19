@@ -18,7 +18,7 @@ const useActivation = () => {
 		if (token) {
 			activationMutation.mutate();
 		}
-	}, [token]);
+	}, [token, activationMutation]);
 
 	return {
 		isPending: activationMutation.isPending,

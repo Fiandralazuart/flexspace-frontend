@@ -1,9 +1,12 @@
 import instance from "@/lib/axios/instance";
 import endpoint from "./endpoint";
-import { ISpace } from "@/types/space";
+import { ISpace, Params } from "@/types/space";
 
 const spaceServices = {
-	getAllSpace: () => instance.get(`${endpoint.SPACE}`),
+	getAllSpace: (params: Params) =>
+		instance.get(endpoint.SPACE, {
+			params,
+		}),
 	createSpace: (payload: ISpace) =>
 		instance.post(`${endpoint.SPACE}`, payload),
 	updateSpace: (payload: ISpace, id: string) =>

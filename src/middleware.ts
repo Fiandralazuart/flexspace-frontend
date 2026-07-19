@@ -11,7 +11,6 @@ export async function middleware(request: NextRequest) {
 		req: request,
 		secret: environment.SECRET,
 	});
-	console.log("Token:", token);
 
 	if (pathname === "/login" || pathname === "/register") {
 		if (token) {

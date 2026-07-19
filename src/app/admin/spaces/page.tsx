@@ -1,5 +1,5 @@
+import SpacesView from "@/components/view/Admin/Spaces";
 import { Metadata } from "next";
-import LoginView from "@/components/view/Auth/login";
 
 
 export const metadata: Metadata = {
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Spaces() {
-	return <p>Space Page</p>
+	return <SpacesView/>
 }
