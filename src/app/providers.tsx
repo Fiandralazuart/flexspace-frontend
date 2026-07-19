@@ -7,23 +7,19 @@ import { Toaster } from "sonner";
 
 const queryClient = new QueryClient();
 
-export function Providers({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
-    return (
-        <SessionProvider>
-            <QueryClientProvider client={queryClient}>
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="dark"
-                    enableSystem
-                >
-                    {children}
+export function Providers({ children }: { children: React.ReactNode }) {
+	return (
+		<SessionProvider>
+			<QueryClientProvider client={queryClient}>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="light"
+					enableSystem
+				>
+					{children}
 					<Toaster richColors position="top-right" />
-                </ThemeProvider>
-            </QueryClientProvider>
-        </SessionProvider>
-    );
+				</ThemeProvider>
+			</QueryClientProvider>
+		</SessionProvider>
+	);
 }

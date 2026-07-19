@@ -18,10 +18,18 @@ interface IActivation {
 	activationCode: string;
 }
 
+interface Role {
+	id: number;
+	name: string;
+	description: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
 declare module "next-auth" {
 	interface User extends DefaultUser {
 		id: string;
-		role?: string;
+		role?: Role;
 		accessToken?: string;
 	}
 
