@@ -1,22 +1,16 @@
 "use client";
 
+import { Key, ReactNode, useCallback, useState } from "react";
+
 import useBuilding from "./useBuilding";
+import { COLUMN_BUILDING } from "./building.constant";
 
-import { Building2, MoreHorizontal, Plus, Search } from "lucide-react";
+import DataTable from "@/components/common/DataTable";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import useDebounce from "@/components/hooks/useDebounce";
+import useQueryParams from "@/components/hooks/useQueryParams";
 
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
+import { Building2, MoreHorizontal } from "lucide-react";
 
 import {
 	DropdownMenu,
@@ -24,275 +18,141 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import AddBuildingModal from "./addBuildingModal";
+import { Badge } from "@/components/ui/badge";
 
-import {
-	Pagination,
-	PaginationContent,
-	PaginationEllipsis,
-	PaginationItem,
-	PaginationLink,
-	PaginationNext,
-	PaginationPrevious,
-} from "@/components/ui/pagination";
-
-import useDebounce from "@/components/hooks/useDebounce";
-import useQueryParams from "@/components/hooks/useQueryParams";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
+export interface Building {
+	id: string;
+	name: string;
+	isPublished: boolean;
+	location: {
+		address: string;
+		link: string;
+		region: number;
+	};
+	createdAt: string;
+}
 
 const Building = () => {
-	const { dataBuilding, meta, isLoadingGetBuilding } = useBuilding();
+	const { dataBuilding, meta, refetchBuilding, isLoadingGetBuilding } =
+		useBuilding();
+
 	const { search, limit, updateQuery } = useQueryParams();
 
 	const debounce = useDebounce();
+	const renderCell = useCallback(
+		(
+			building: Building,
+			columnKey: keyof Building | "actions",
+		): ReactNode => {
+			switch (columnKey) {
+				case "name":
+					return (
+						<div className="flex items-center gap-3">
+							<div className="rounded-lg bg-primary/10 p-2">
+								<Building2 className="h-4 w-4 text-primary" />
+							</div>
 
-	const currentPage = meta?.page ?? 1;
-	const totalPage = meta?.totalPage ?? 1;
+							<div>
+								<p className="font-medium">{building.name}</p>
 
-	const pages = (() => {
-		const result: (number | "...")[] = [];
+								<p className="text-xs text-muted-foreground">
+									{building.location.address}
+								</p>
+							</div>
+						</div>
+					);
 
-		if (totalPage <= 7) {
-			return Array.from({ length: totalPage }, (_, i) => i + 1);
-		}
+				case "isPublished":
+					return (
+						<Badge
+							variant={
+								building.isPublished ? "default" : "secondary"
+							}
+							className={
+								building.isPublished
+									? "bg-emerald-500 hover:bg-emerald-600"
+									: "bg-red-200 text-red-600 hover:bg-red-600"
+							}
+						>
+							{building.isPublished ? "Published" : "Draft"}
+						</Badge>
+					);
 
-		result.push(1);
+				case "createdAt":
+					return new Date(building.createdAt).toLocaleDateString(
+						"id-ID",
+					);
 
-		if (currentPage > 3) {
-			result.push("...");
-		}
+				case "actions":
+					return (
+						<DropdownMenu>
+							<DropdownMenuTrigger className="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent">
+								<MoreHorizontal className="h-4 w-4" />
+							</DropdownMenuTrigger>
 
-		const start = Math.max(2, currentPage - 1);
-		const end = Math.min(totalPage - 1, currentPage + 1);
+							<DropdownMenuContent align="end">
+								<DropdownMenuItem>Edit</DropdownMenuItem>
 
-		for (let i = start; i <= end; i++) {
-			result.push(i);
-		}
+								<DropdownMenuItem className="text-red-500">
+									Delete
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+					);
 
-		if (currentPage < totalPage - 2) {
-			result.push("...");
-		}
+				default:
+					return null;
+			}
+		},
+		[],
+	);
 
-		result.push(totalPage);
-
-		return result;
-	})();
+	const [openAddBuilding, setOpenAddBuilding] = useState(false);
 
 	return (
-		<Card>
-			<CardHeader className="flex flex-row items-center justify-between">
-				<div>
-					<CardTitle>Building List</CardTitle>
-
-					<p className="mt-1 text-sm text-muted-foreground">
-						Manage all buildings across your organization.
-					</p>
-				</div>
-
-				<Button>
-					<Plus className="mr-2 h-4 w-4" />
-					Add Building
-				</Button>
-			</CardHeader>
-
-			<CardContent>
-				<div className="relative mb-6 max-w-sm">
-					<Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-
-					<Input
-						className="pl-10"
-						defaultValue={search}
-						placeholder="Search building..."
-						onChange={(e) =>
-							debounce(() => {
-								updateQuery({
-									search: e.target.value,
-									page: 1,
-								});
-							}, 500)
-						}
-					/>
-				</div>
-
-				<div className="rounded-lg border">
-					<Table>
-						<TableHeader>
-							<TableRow>
-								<TableHead>Building</TableHead>
-								<TableHead>Status</TableHead>
-								<TableHead>Created At</TableHead>
-								<TableHead className="w-[70px]" />
-							</TableRow>
-						</TableHeader>
-
-						<TableBody>
-							{!isLoadingGetBuilding &&
-								dataBuilding.map((building: any) => (
-									<TableRow key={building.id}>
-										<TableCell>
-											<div className="flex items-center gap-3">
-												<div className="rounded-lg bg-primary/10 p-2">
-													<Building2 className="h-4 w-4 text-primary" />
-												</div>
-
-												<div>
-													<p className="font-medium">
-														{building.name}
-													</p>
-
-													<p className="text-xs text-muted-foreground">
-														{building.description}
-													</p>
-												</div>
-											</div>
-										</TableCell>
-
-										<TableCell>
-											{building.isPublised ? (
-												<Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">
-													Published
-												</Badge>
-											) : (
-												<Badge className="bg-red-100 text-red-700 hover:bg-red-100">
-													Draft
-												</Badge>
-											)}
-										</TableCell>
-
-										<TableCell className="text-muted-foreground">
-											{new Date(
-												building.createdAt,
-											).toLocaleDateString()}
-										</TableCell>
-
-										<TableCell>
-											<DropdownMenu>
-												<DropdownMenuTrigger className="inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors hover:bg-accent hover:text-accent-foreground">
-													<MoreHorizontal className="h-4 w-4" />
-												</DropdownMenuTrigger>
-
-												<DropdownMenuContent align="end">
-													<DropdownMenuItem>
-														Edit
-													</DropdownMenuItem>
-
-													<DropdownMenuItem className="text-red-600">
-														Delete
-													</DropdownMenuItem>
-												</DropdownMenuContent>
-											</DropdownMenu>
-										</TableCell>
-									</TableRow>
-								))}
-						</TableBody>
-					</Table>
-				</div>
-
-				<div className="mt-6 flex items-center justify-between border-t pt-4">
-					<div className="flex items-center gap-6">
-						<div className="flex items-center gap-2">
-							<span className="text-sm text-muted-foreground">
-								Rows per page
-							</span>
-
-							<Select
-								value={String(limit)}
-								onValueChange={(value) =>
-									updateQuery({
-										limit: Number(value),
-										page: 1,
-									})
-								}
-							>
-								<SelectTrigger className="h-9 w-20">
-									<SelectValue />
-								</SelectTrigger>
-
-								<SelectContent>
-									<SelectItem value="10">10</SelectItem>
-									<SelectItem value="25">25</SelectItem>
-									<SelectItem value="50">50</SelectItem>
-									<SelectItem value="100">100</SelectItem>
-								</SelectContent>
-							</Select>
-						</div>
-
-						<p className="text-sm text-muted-foreground">
-							Showing{" "}
-							<span className="font-medium">
-								{dataBuilding.length}
-							</span>{" "}
-							of{" "}
-							<span className="font-medium">
-								{meta?.totalData ?? 0}
-							</span>{" "}
-							buildings
-						</p>
-					</div>
-
-					<Pagination className="ml-auto">
-						<PaginationContent>
-							<PaginationItem>
-								<PaginationPrevious
-									className={
-										currentPage === 1
-											? "pointer-events-none opacity-50"
-											: "cursor-pointer"
-									}
-									onClick={() =>
-										currentPage > 1 &&
-										updateQuery({
-											page: currentPage - 1,
-										})
-									}
-								/>
-							</PaginationItem>
-
-							{pages.map((item, index) => (
-								<PaginationItem key={`${item}-${index}`}>
-									{item === "..." ? (
-										<PaginationEllipsis />
-									) : (
-										<PaginationLink
-											isActive={item === currentPage}
-											className="cursor-pointer"
-											onClick={() =>
-												updateQuery({
-													page: item,
-												})
-											}
-										>
-											{item}
-										</PaginationLink>
-									)}
-								</PaginationItem>
-							))}
-
-							<PaginationItem>
-								<PaginationNext
-									className={
-										currentPage === totalPage
-											? "pointer-events-none opacity-50"
-											: "cursor-pointer"
-									}
-									onClick={() =>
-										currentPage < totalPage &&
-										updateQuery({
-											page: currentPage + 1,
-										})
-									}
-								/>
-							</PaginationItem>
-						</PaginationContent>
-					</Pagination>
-				</div>
-			</CardContent>
-		</Card>
+		<>
+			<DataTable<Building>
+				title="Building List"
+				description="Manage all buildings across your organization."
+				data={dataBuilding}
+				columns={COLUMN_BUILDING}
+				renderCell={renderCell}
+				loading={isLoadingGetBuilding}
+				search={search}
+				searchPlaceholder="Search building..."
+				onSearch={(value) =>
+					debounce(() => {
+						updateQuery({
+							search: value,
+							page: 1,
+						});
+					}, 500)
+				}
+				addLabel="Add Building"
+				onAdd={() => setOpenAddBuilding(true)}
+				totalData={meta?.totalData}
+				page={meta?.page}
+				totalPage={meta?.totalPage}
+				limit={limit}
+				onLimitChange={(value) =>
+					updateQuery({
+						limit: value,
+						page: 1,
+					})
+				}
+				onPageChange={(page) =>
+					updateQuery({
+						page,
+					})
+				}
+			/>
+			<AddBuildingModal
+				open={openAddBuilding}
+				onOpenChange={setOpenAddBuilding}
+				refetchBuilding={refetchBuilding}
+			/>
+		</>
 	);
 };
 

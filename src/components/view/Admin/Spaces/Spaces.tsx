@@ -122,7 +122,9 @@ const SpacesView = () => {
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHead>Space</TableHead>
+								<TableHead className="text-start">
+									Space
+								</TableHead>
 
 								<TableHead className="text-center">
 									Building
