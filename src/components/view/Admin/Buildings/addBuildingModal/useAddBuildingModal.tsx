@@ -1,10 +1,11 @@
 import useMediaHandling from "@/components/hooks/useMediaHandling";
+import { socket } from "@/lib/socket";
 import buildingServices from "@/services/building.service";
 import RegionServices from "@/services/region.service";
 import { IBuilding } from "@/types/space";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -29,6 +30,7 @@ export const createBuildingSchema = z.object({
 			.min(1, "Address is required")
 			.max(255, "Address must not exceed 255 characters"),
 	}),
+	isPublished: z.boolean(),
 });
 
 export type CreateBuildingDTO = z.infer<typeof createBuildingSchema>;
@@ -60,6 +62,7 @@ const useAddBuildingModal = () => {
 		resolver: zodResolver(createBuildingSchema),
 		defaultValues: {
 			name: "",
+			isPublished: false,
 			location: {
 				link: "",
 				region: undefined,
@@ -68,7 +71,7 @@ const useAddBuildingModal = () => {
 		},
 	});
 
-	const createBuilding = async (payload: IBuilding) => {
+	const createBuilding = async (payload: CreateBuildingDTO) => {
 		return await buildingServices.createBuilding(payload);
 	};
 
@@ -122,8 +125,8 @@ const useAddBuildingModal = () => {
 
 		dataCity,
 		isLoadingCity,
-		searchCity, 
-		setSearchCity
+		searchCity,
+		setSearchCity,
 	};
 };
 

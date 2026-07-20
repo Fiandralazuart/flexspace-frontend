@@ -21,6 +21,7 @@ import {
 import AddBuildingModal from "./addBuildingModal";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import DeleteBuildingModal from "./deleteBuildingModal";
 
 export interface Building {
 	id: string;
@@ -35,7 +36,7 @@ export interface Building {
 }
 
 const Building = () => {
-	const router = useRouter()
+	const router = useRouter();
 	const { dataBuilding, meta, refetchBuilding, isLoadingGetBuilding } =
 		useBuilding();
 
@@ -104,7 +105,13 @@ const Building = () => {
 									Edit
 								</DropdownMenuItem>
 
-								<DropdownMenuItem className="text-red-500">
+								<DropdownMenuItem
+									onClick={() => {
+										setOpenDeleteBuilding(true);
+										setSelectedBuilding(building);
+									}}
+									className="text-red-500"
+								>
 									Delete
 								</DropdownMenuItem>
 							</DropdownMenuContent>
@@ -119,6 +126,10 @@ const Building = () => {
 	);
 
 	const [openAddBuilding, setOpenAddBuilding] = useState(false);
+	const [openDeleteBuilding, setOpenDeleteBuilding] = useState(false);
+	const [selectedBuilding, setSelectedBuilding] = useState<Building | null>(
+		null,
+	);
 
 	return (
 		<>
@@ -161,6 +172,13 @@ const Building = () => {
 				open={openAddBuilding}
 				onOpenChange={setOpenAddBuilding}
 				refetchBuilding={refetchBuilding}
+			/>
+			<DeleteBuildingModal
+				open={openDeleteBuilding}
+				onOpenChange={setOpenDeleteBuilding}
+				refetchBuilding={refetchBuilding}
+				name={selectedBuilding?.name || ""}
+				id={selectedBuilding?.id || ""}
 			/>
 		</>
 	);

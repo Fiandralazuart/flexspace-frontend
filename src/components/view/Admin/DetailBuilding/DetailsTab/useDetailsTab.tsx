@@ -20,18 +20,12 @@ const useDetailsTab = () => {
 		queryFn: () => findCity(searchCity),
 		enabled: searchCity.length > 1,
 	});
-	const onSubmit = (data: any) => {
-		console.log(data);
-
-		// updateBuildingMutation.mutate(data);
-	};
 
 	return {
 		dataCity,
 		isLoadingCity,
 		searchCity,
 		setSearchCity,
-		onSubmit,
 	};
 };
 

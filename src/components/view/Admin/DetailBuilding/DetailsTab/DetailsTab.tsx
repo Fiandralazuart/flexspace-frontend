@@ -23,6 +23,7 @@ import { IBuilding } from "@/types/space";
 import { UpdateBuildingDTO } from "../useDetailBuilding";
 import { Control, FieldErrors, UseFormHandleSubmit } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
+import { Switch } from "@/components/ui/switch";
 
 type PropTypes = {
 	dataBuilding: IBuilding;
@@ -43,7 +44,7 @@ const DetailsTab = (props: PropTypes) => {
 		handleUpdateBuilding,
 	} = props;
 
-	const { dataCity, isLoadingCity, searchCity, setSearchCity, onSubmit } =
+	const { dataCity, isLoadingCity, searchCity, setSearchCity } =
 		useDetailsTab();
 	const router = useRouter();
 
@@ -115,7 +116,7 @@ const DetailsTab = (props: PropTypes) => {
 							</div>
 
 							<div className="space-y-2">
-								<Label>Region Id</Label>
+								<Label>Region ID</Label>
 
 								<Controller
 									name="location.region"
@@ -158,6 +159,48 @@ const DetailsTab = (props: PropTypes) => {
 										{errors.location.link.message}
 									</p>
 								)}
+							</div>
+
+							<div className="space-y-4">
+								<h3 className="text-lg font-semibold">
+									Status
+								</h3>
+
+								<div className="space-y-2">
+									<Controller
+										name="isPublished"
+										control={control}
+										render={({ field }) => (
+											<div className="flex items-center justify-between rounded-lg border p-4">
+												<div>
+													<p className="font-medium">
+														Published
+													</p>
+													<p className="text-sm text-muted-foreground">
+														Allow this building to
+														be visible and available
+														for users.
+													</p>
+												</div>
+
+												<Switch
+													checked={
+														field.value ?? false
+													}
+													onCheckedChange={
+														field.onChange
+													}
+												/>
+											</div>
+										)}
+									/>
+
+									{errors.isPublished && (
+										<p className="text-sm text-destructive">
+											{errors.isPublished.message}
+										</p>
+									)}
+								</div>
 							</div>
 						</div>
 					</CardContent>

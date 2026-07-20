@@ -27,6 +27,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
 interface Props {
 	open: boolean;
@@ -41,12 +42,6 @@ const AddBuildingModal = ({ open, onOpenChange, refetchBuilding }: Props) => {
 		handleSubmit,
 
 		handleAddBuilding,
-
-		handleUploadFile,
-		handleDeleteFile,
-		isPendingUploadFile,
-		isPendingDeleteFile,
-
 		isPendingBuilding,
 		isSuccessBuilding,
 		dataCity,
@@ -225,6 +220,32 @@ const AddBuildingModal = ({ open, onOpenChange, refetchBuilding }: Props) => {
 									</p>
 								)}
 							</div>
+						</div>
+						<div className="space-y-2">
+							<Label>Publish</Label>
+
+							<Controller
+								name="isPublished"
+								control={control}
+								render={({ field }) => (
+									<div className="flex items-center justify-between rounded-lg border p-3">
+										<div>
+											<p className="font-medium">
+												Published
+											</p>
+											<p className="text-sm text-muted-foreground">
+												Make this building visible to
+												users.
+											</p>
+										</div>
+
+										<Switch
+											checked={field.value}
+											onCheckedChange={field.onChange}
+										/>
+									</div>
+								)}
+							/>
 						</div>
 					</div>
 

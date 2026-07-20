@@ -58,11 +58,9 @@ const useDetailBuilding = () => {
 		// 	status: "AVAILABLE",
 		// },
 	});
-	console.log(params.id);
 
 	const findOneBuilding = async () => {
 		const result = await buildingServices.getOneBuilding(`${params.id}`);
-		console.log(result);
 		return result;
 	};
 	const {
