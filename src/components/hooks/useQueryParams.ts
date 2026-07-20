@@ -1,11 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import {
-	usePathname,
-	useRouter,
-	useSearchParams,
-} from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 10;
@@ -24,18 +20,14 @@ const useQueryParams = () => {
 			const query = new URLSearchParams(searchParams.toString());
 
 			Object.entries(params).forEach(([key, value]) => {
-				if (
-					value === "" ||
-					value === undefined ||
-					value === null
-				) {
+				if (value === "" || value === undefined || value === null) {
 					query.delete(key);
 				} else {
 					query.set(key, String(value));
 				}
 			});
 
-			router.push(`${pathname}?${query.toString()}`);
+			router.replace(`${pathname}?${query.toString()}`);
 		},
 		[pathname, router, searchParams],
 	);

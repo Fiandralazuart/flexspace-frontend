@@ -1,79 +1,47 @@
-
 import uploadServices from "@/services/upload.service";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const useMediaHandling = () => {
-	const uploadFile = async (
-		file: File,
-		callback: (fileUrl: string) => void
-	) => {
+	const uploadFile = async (file: File) => {
 		const formData = new FormData();
 		formData.append("file", file);
 
 		const {
-			data: {
-				data: { secure_url: fileUrl },
-			},
+			data: { data },
 		} = await uploadServices.uploadFile(formData);
 
-		console.log(fileUrl);
-		callback(fileUrl);
+		return data;
 	};
 
-	const { mutate: mutateUploadFile, isPending: isPendingUploadFile } =
+	const { mutateAsync: mutateUploadFile, isPending: isPendingUploadFile } =
 		useMutation({
-			mutationFn: (variable: {
-				file: File;
-				callback: (fileUrl: string) => void;
-			}) => uploadFile(variable.file, variable.callback),
+			mutationFn: uploadFile,
 			onError: () => {
 				toast.error("Failed to upload file");
 			},
 		});
 
-	const handleUploadFile = (
-		files: FileList,
-		onChange: (files: FileList | undefined) => void,
-		callback: (fileUrl?: string) => void
-	) => {
-		if (files.length !== 0) {
-			onChange(files);
-			mutateUploadFile({
-				file: files[0],
-				callback,
-			});
-		}
+	const handleUploadFile = async (files: FileList) => {
+		if (files.length === 0) return;
+
+		return await mutateUploadFile(files[0]);
 	};
 
-	const deleteFile = async (fileUrl: string, callback: () => void) => {
-		const result = await uploadServices.deleteFile({ fileUrl });
-
-		if (result.data.meta.status === 200) {
-			callback();
-		}
+	const deleteFile = async (fileUrl: string) => {
+		return await uploadServices.deleteFile({ fileUrl });
 	};
 
-	const { mutate: mutateDeleteFile, isPending: isPendingDeleteFile } =
+	const { mutateAsync: mutateDeleteFile, isPending: isPendingDeleteFile } =
 		useMutation({
-			mutationFn: (variable: {
-				fileUrl: string;
-				callback: () => void;
-			}) => deleteFile(variable.fileUrl, variable.callback),
+			mutationFn: deleteFile,
 			onError: (error) => {
 				toast.error(error.message);
 			},
 		});
 
-	const handleDeleteFile = (
-		fileUrl: string | FileList | undefined,
-		callback: () => void
-	) => {
-		if (typeof fileUrl === "string") {
-			mutateDeleteFile({ fileUrl, callback });
-		} else {
-			callback();
-		}
+	const handleDeleteFile = async (fileUrl: string) => {
+		await mutateDeleteFile(fileUrl);
 	};
 
 	return {

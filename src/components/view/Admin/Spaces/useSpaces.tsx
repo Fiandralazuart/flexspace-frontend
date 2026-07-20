@@ -13,7 +13,7 @@ const useSpace = () => {
 			limit,
 			search,
 		});
-		return result.data;
+		return result.data.data;
 	};
 
 	const {
@@ -26,12 +26,11 @@ const useSpace = () => {
 		queryFn: getSpace,
 	});
 
-		useEffect(() => {
+	useEffect(() => {
 		socket.on("spaceCreated", refetchSpace);
 		socket.on("spaceUpdated", refetchSpace);
 		socket.on("spaceDeleted", refetchSpace);
 		socket.on("occupancyUpdated", refetchSpace);
-		console.count("occupancyUpdated");
 
 		return () => {
 			socket.off("spaceCreated", refetchSpace);

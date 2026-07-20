@@ -1,12 +1,25 @@
-interface Location {
-	link: string;
-	region: number;
-	address: string;
+export interface Province {
+	id: string;
+	name: string;
 }
 
-interface IBuilding {
+export interface City {
+	id: string;
+	name: string;
+	provinceId: string;
+	province: Province;
+}
+
+export interface Location {
+	link: string;
+	address: string;
+	region: City;
+}
+
+export interface IBuilding {
 	name: string;
 	location: Location;
+	isPublished?: boolean;
 }
 
 interface ISpace {
@@ -24,6 +37,16 @@ interface Params {
 	page: number;
 	limit: number;
 	search: string;
+}
+
+export interface IBuildingPayload {
+	name: string;
+	location: {
+		link: string;
+		address: string;
+		region: number;
+	};
+	isPublished: boolean;
 }
 
 export {

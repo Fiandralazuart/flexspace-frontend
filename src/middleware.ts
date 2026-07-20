@@ -18,23 +18,21 @@ export async function middleware(request: NextRequest) {
 		}
 	}
 
-	// if (pathname.startsWith("/admin")) {
-	// 	if (!token) {
-	// 		const url = new URL("/auth/login", request.url);
-	// 		url.searchParams.set("callbackUrl", encodeURI(request.url));
-	// 		return NextResponse.redirect(url);
-	// 	}
+	if (pathname.startsWith("/admin")) {
+		if (!token) {
+			const url = new URL("/login", request.url);
+			url.searchParams.set("callbackUrl", encodeURI(request.url));
+			return NextResponse.redirect(url);
+		}
 
-	// 	if (token?.user?.role !== "admin") {
-	// 		return NextResponse.redirect(new URL("/", request.url));
-	// 	}
+		if (token?.user?.role?.name !== "SUPER_ADMIN") {
+			return NextResponse.redirect(new URL("/", request.url));
+		}
 
-	// 	if (pathname === "/admin") {
-	// 		return NextResponse.redirect(
-	// 			new URL("/admin/accomodation", request.url),
-	// 		);
-	// 	}
-	// }
+		if (pathname === "/admin") {
+			return NextResponse.redirect(new URL("/admin/spaces", request.url));
+		}
+	}
 	// if (pathname.startsWith("/member")) {
 	// 	if (!token) {
 	// 		const url = new URL("/auth/login");
@@ -50,7 +48,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ["/login", "/register"],
+	matcher: ["/login", "/register", "/admin/:path*"],
 };
 
-// "/admin/:path*", "/member/:path*"
+// , "/member/:path*"

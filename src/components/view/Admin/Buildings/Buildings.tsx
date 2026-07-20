@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import AddBuildingModal from "./addBuildingModal";
 import { Badge } from "@/components/ui/badge";
+import { useRouter } from "next/navigation";
 
 export interface Building {
 	id: string;
@@ -34,6 +35,7 @@ export interface Building {
 }
 
 const Building = () => {
+	const router = useRouter()
 	const { dataBuilding, meta, refetchBuilding, isLoadingGetBuilding } =
 		useBuilding();
 
@@ -72,7 +74,7 @@ const Building = () => {
 							className={
 								building.isPublished
 									? "bg-emerald-500 hover:bg-emerald-600"
-									: "bg-red-200 text-red-600 hover:bg-red-600"
+									: "bg-red-200 text-red-600 hover:bg-red-300"
 							}
 						>
 							{building.isPublished ? "Published" : "Draft"}
@@ -92,7 +94,15 @@ const Building = () => {
 							</DropdownMenuTrigger>
 
 							<DropdownMenuContent align="end">
-								<DropdownMenuItem>Edit</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={() =>
+										router.push(
+											`/admin/buildings/${building.id}`,
+										)
+									}
+								>
+									Edit
+								</DropdownMenuItem>
 
 								<DropdownMenuItem className="text-red-500">
 									Delete

@@ -1,13 +1,9 @@
 import { Loader2, Plus, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useEffect, useState } from "react";
 
 import {
 	Table,
@@ -51,15 +47,19 @@ export default function DataTable<T extends { id: string }>(
 		onPageChange,
 	} = props;
 
+	const [searchValue, setSearchValue] = useState(search ?? "");
+
+	useEffect(() => {
+		setSearchValue(search ?? "");
+	}, [search]);
+
 	return (
 		<Card className="shadow-sm">
 			<CardHeader className="space-y-4">
 				<div className="flex items-start justify-between">
 					<div>
 						{title && (
-							<CardTitle className="text-xl">
-								{title}
-							</CardTitle>
+							<CardTitle className="text-xl">{title}</CardTitle>
 						)}
 
 						{description && (
@@ -82,10 +82,11 @@ export default function DataTable<T extends { id: string }>(
 						<Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
 						<Input
-							value={search}
-							onChange={(e) =>
-								onSearch?.(e.target.value)
-							}
+							value={searchValue}
+							onChange={(e) => {
+								setSearchValue(e.target.value);
+								onSearch?.(e.target.value);
+							}}
 							placeholder={searchPlaceholder}
 							className="pl-10"
 						/>
@@ -141,10 +142,7 @@ export default function DataTable<T extends { id: string }>(
 												key={String(column.key)}
 												className={column.className}
 											>
-												{renderCell(
-													item,
-													column.key,
-												)}
+												{renderCell(item, column.key)}
 											</TableCell>
 										))}
 									</TableRow>
@@ -157,13 +155,8 @@ export default function DataTable<T extends { id: string }>(
 				<div className="flex items-center justify-between border-t pt-4">
 					<p className="text-sm text-muted-foreground">
 						Showing{" "}
-						<span className="font-medium">
-							{data.length}
-						</span>{" "}
-						of{" "}
-						<span className="font-medium">
-							{totalData ?? 0}
-						</span>{" "}
+						<span className="font-medium">{data.length}</span> of{" "}
+						<span className="font-medium">{totalData ?? 0}</span>{" "}
 						data
 					</p>
 
