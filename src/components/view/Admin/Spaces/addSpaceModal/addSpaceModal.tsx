@@ -26,6 +26,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useAddSpaceModal from "./useAddSpaceModal";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Props {
 	open: boolean;
@@ -107,8 +109,12 @@ const AddSpaceModal = ({ open, onOpenChange, refetchSpace }: Props) => {
 												</SelectTrigger>
 
 												<SelectContent>
-													{dataBuilding .filter((building) => building.isPublished).map(
-														(building) => (
+													{dataBuilding
+														.filter(
+															(building) =>
+																building.isPublished,
+														)
+														.map((building) => (
 															<SelectItem
 																key={
 																	building.id
@@ -119,8 +125,7 @@ const AddSpaceModal = ({ open, onOpenChange, refetchSpace }: Props) => {
 															>
 																{building.name}
 															</SelectItem>
-														),
-													)}
+														))}
 												</SelectContent>
 											</Select>
 										);
@@ -162,9 +167,10 @@ const AddSpaceModal = ({ open, onOpenChange, refetchSpace }: Props) => {
 									name="description"
 									control={control}
 									render={({ field }) => (
-										<Input
+										<Textarea
 											{...field}
-											placeholder="Space description"
+											rows={3}
+											placeholder="Describe this space..."
 										/>
 									)}
 								/>
@@ -179,9 +185,18 @@ const AddSpaceModal = ({ open, onOpenChange, refetchSpace }: Props) => {
 
 						{/* Configuration */}
 						<div className="space-y-4">
-							<h3 className="font-semibold">Configuration</h3>
+							<div>
+								<h3 className="text-base font-semibold">
+									Configuration
+								</h3>
+								<p className="text-sm text-muted-foreground">
+									Set the operational configuration of this
+									space.
+								</p>
+							</div>
 
 							<div className="grid grid-cols-2 gap-4">
+								{/* Floor */}
 								<div className="space-y-2">
 									<Label>Floor</Label>
 
@@ -194,7 +209,12 @@ const AddSpaceModal = ({ open, onOpenChange, refetchSpace }: Props) => {
 												value={field.value ?? ""}
 												onChange={(e) =>
 													field.onChange(
-														Number(e.target.value),
+														e.target.value === ""
+															? undefined
+															: Number(
+																	e.target
+																		.value,
+																),
 													)
 												}
 											/>
@@ -208,6 +228,7 @@ const AddSpaceModal = ({ open, onOpenChange, refetchSpace }: Props) => {
 									)}
 								</div>
 
+								{/* Capacity */}
 								<div className="space-y-2">
 									<Label>Capacity</Label>
 
@@ -233,41 +254,78 @@ const AddSpaceModal = ({ open, onOpenChange, refetchSpace }: Props) => {
 										</p>
 									)}
 								</div>
-							</div>
 
-							<div className="space-y-2">
-								<Label>Status</Label>
+								{/* Status */}
+								<div className="space-y-2">
+									<Label>Status</Label>
 
-								<Controller
-									name="status"
-									control={control}
-									render={({ field }) => (
-										<Select
-											value={field.value}
-											onValueChange={field.onChange}
-										>
-											<SelectTrigger>
-												<SelectValue />
-											</SelectTrigger>
+									<Controller
+										name="status"
+										control={control}
+										render={({ field }) => (
+											<Select
+												value={field.value}
+												onValueChange={field.onChange}
+											>
+												<SelectTrigger>
+													<SelectValue placeholder="Select status" />
+												</SelectTrigger>
 
-											<SelectContent>
-												<SelectItem value="AVAILABLE">
-													Available
-												</SelectItem>
+												<SelectContent>
+													<SelectItem value="ACTIVE">
+														Active
+													</SelectItem>
 
-												<SelectItem value="UNAVAILABLE">
-													Unavailable
-												</SelectItem>
-											</SelectContent>
-										</Select>
+													<SelectItem value="MAINTENANCE">
+														Maintenance
+													</SelectItem>
+
+													<SelectItem value="INACTIVE">
+														Inactive
+													</SelectItem>
+												</SelectContent>
+											</Select>
+										)}
+									/>
+
+									{errors.status && (
+										<p className="text-sm text-destructive">
+											{errors.status.message}
+										</p>
 									)}
-								/>
+								</div>
 
-								{errors.status && (
-									<p className="text-sm text-destructive">
-										{errors.status.message}
-									</p>
-								)}
+								{/* Publish */}
+								<div className="space-y-2">
+									<Label>Published</Label>
+
+									<Controller
+										name="isPublished"
+										control={control}
+										render={({ field }) => (
+											<div className="flex h-10 items-center justify-between rounded-md border px-3">
+												<span className="text-sm text-muted-foreground">
+													Visible
+												</span>
+
+												<Switch
+													checked={
+														field.value ?? false
+													}
+													onCheckedChange={
+														field.onChange
+													}
+												/>
+											</div>
+										)}
+									/>
+
+									{errors.isPublished && (
+										<p className="text-sm text-destructive">
+											{errors.isPublished.message}
+										</p>
+									)}
+								</div>
 							</div>
 						</div>
 

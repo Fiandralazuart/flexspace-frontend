@@ -31,7 +31,7 @@ export const createSpaceSchema = z.object({
 
 	pictureId: z.string(),
 
-	status: z.enum(["AVAILABLE", "UNAVAILABLE"]),
+	status: z.enum(["ACTIVE", "MAINTENANCE", "INACTIVE"]),
 	isPublished: z.boolean(),
 });
 
@@ -68,7 +68,8 @@ const useAddSpaceModal = () => {
 			capacity: 1,
 			picture: "",
 			pictureId: "",
-			status: "AVAILABLE",
+			status: "ACTIVE",
+			isPublished: false,
 		},
 	});
 

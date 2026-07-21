@@ -5,7 +5,7 @@ export const COLUMN_SPACE: Column<Space>[] = [
 	{
 		key: "name",
 		title: "Space",
-		className: "w-[30%] text-start",
+		className: "w-[25%] text-start",
 	},
 	{
 		key: "building",
@@ -30,6 +30,11 @@ export const COLUMN_SPACE: Column<Space>[] = [
 	{
 		key: "status",
 		title: "Status",
+		className: "text-center",
+	},
+	{
+		key: "isPublished",
+		title: "Published",
 		className: "text-center",
 	},
 	{

@@ -17,6 +17,7 @@ export interface Location {
 }
 
 export interface IBuilding {
+	id: string;
 	name: string;
 	location: Location;
 	isPublished?: boolean;

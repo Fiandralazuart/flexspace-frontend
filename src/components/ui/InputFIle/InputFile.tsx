@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import { ChangeEvent, ReactNode, useEffect, useId, useRef } from "react";
 import { Loader2, Trash2, Upload } from "lucide-react";
@@ -85,7 +84,7 @@ const InputFile = ({
 				className={cn(
 					"flex min-h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/20 transition-colors hover:bg-muted/40",
 					isInvalid && "border-destructive",
-					classname
+					classname,
 				)}
 			>
 				{preview ? (
@@ -146,7 +145,6 @@ const InputFile = ({
 					accept="image/*"
 					className="hidden"
 					onChange={handleOnUpload}
-					disabled={!!preview}
 					onClick={(e) => {
 						e.currentTarget.value = "";
 					}}

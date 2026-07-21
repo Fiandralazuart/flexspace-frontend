@@ -19,6 +19,8 @@ import DataTable from "@/components/common/DataTable";
 import { COLUMN_SPACE } from "./space.constant";
 import AddSpaceModal from "./addSpaceModal";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import DeleteSpaceModal from "./deleteSpaceModal";
 
 export interface Space {
 	id: string;
@@ -28,7 +30,8 @@ export interface Space {
 	capacity: number;
 	personCount: number;
 	occupancy: "EMPTY" | "OCCUPIED";
-	status: "AVAILABLE" | "UNAVAILABLE";
+	status: "ACTIVE" | "MAINTENANCE" | "INACTIVE";
+	isPublished: boolean;
 
 	building: {
 		id: string;
@@ -41,6 +44,7 @@ const SpacesView = () => {
 	const { search, limit, updateQuery } = useQueryParams();
 
 	const debounce = useDebounce();
+	const router = useRouter();
 
 	interface Props {
 		onEdit?: (space: Space) => void;
@@ -84,7 +88,7 @@ const SpacesView = () => {
 								className:
 									"border-red-200 bg-red-50 text-red-700",
 							}
-						: space.occupancy === "EMPTY"
+						: space.personCount === 0
 							? {
 									label: "EMPTY",
 									className:
@@ -137,17 +141,39 @@ const SpacesView = () => {
 				);
 			}
 
-			case "status":
+			case "status": {
+				const statusStyle = {
+					ACTIVE: "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-50",
+					MAINTENANCE:
+						"border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-50",
+					INACTIVE:
+						"border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-100",
+				};
+
 				return (
 					<div className="text-center">
 						<Badge
+							variant="outline"
+							className={statusStyle[space.status]}
+						>
+							{space.status.replace("_", " ")}
+						</Badge>
+					</div>
+				);
+			}
+
+			case "isPublished":
+				return (
+					<div className="text-center">
+						<Badge
+							variant="outline"
 							className={
-								space.status === "AVAILABLE"
-									? "bg-emerald-100 text-emerald-700 hover:bg-emerald-100"
-									: "bg-orange-100 text-orange-700 hover:bg-orange-100"
+								space.isPublished
+									? "border-emerald-200 bg-emerald-50 text-emerald-700"
+									: "border-slate-200 bg-red-100 text-red-700"
 							}
 						>
-							{space.status}
+							{space.isPublished ? "Published" : "Draft"}
 						</Badge>
 					</div>
 				);
@@ -161,9 +187,21 @@ const SpacesView = () => {
 							</DropdownMenuTrigger>
 
 							<DropdownMenuContent align="end">
-								<DropdownMenuItem>Edit</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={() =>
+										router.push(`/admin/spaces/${space.id}`)
+									}
+								>
+									Edit
+								</DropdownMenuItem>
 
-								<DropdownMenuItem className="text-red-600">
+								<DropdownMenuItem
+									onClick={() => {
+										setSelectedSpace(space);
+										setOpenDeleteSpace(true);
+									}}
+									className="text-red-600"
+								>
 									Delete
 								</DropdownMenuItem>
 							</DropdownMenuContent>
@@ -176,6 +214,8 @@ const SpacesView = () => {
 	};
 
 	const [openAddSpace, setOpenAddSpace] = useState(false);
+	const [openDeleteSpace, setOpenDeleteSpace] = useState(false);
+	const [selectedSpace, setSelectedSpace] = useState<Space | null>(null);
 
 	return (
 		<>
@@ -219,6 +259,13 @@ const SpacesView = () => {
 				open={openAddSpace}
 				onOpenChange={setOpenAddSpace}
 				refetchSpace={refetchSpace}
+			/>
+			<DeleteSpaceModal
+				open={openDeleteSpace}
+				onOpenChange={setOpenDeleteSpace}
+				refetchSpace={refetchSpace}
+				id={selectedSpace?.id ?? ""}
+				name={selectedSpace?.name ?? ""}
 			/>
 		</>
 	);

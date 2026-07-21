@@ -9,13 +9,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import { Controller } from "react-hook-form";
 import useDetailsTab from "./useDetailsTab";
 import CityCombobox from "@/components/common/cityCombox";
@@ -89,7 +82,46 @@ const DetailsTab = (props: PropTypes) => {
 									</p>
 								)}
 							</div>
+							<div className="space-y-4">
+							
+								<div className="space-y-2">
+									<Controller
+										name="isPublished"
+										control={control}
+										render={({ field }) => (
+											<div className="flex items-center justify-between rounded-lg border p-4">
+												<div>
+													<p className="font-medium">
+														Published
+													</p>
+													<p className="text-sm text-muted-foreground">
+														Allow this building to
+														be visible and available
+														for users.
+													</p>
+												</div>
+
+												<Switch
+													checked={
+														field.value ?? false
+													}
+													onCheckedChange={
+														field.onChange
+													}
+												/>
+											</div>
+										)}
+									/>
+
+									{errors.isPublished && (
+										<p className="text-sm text-destructive">
+											{errors.isPublished.message}
+										</p>
+									)}
+								</div>
+							</div>
 						</div>
+
 
 						<div className="space-y-4">
 							<h3 className="text-lg font-semibold">Location</h3>
@@ -160,48 +192,7 @@ const DetailsTab = (props: PropTypes) => {
 									</p>
 								)}
 							</div>
-
-							<div className="space-y-4">
-								<h3 className="text-lg font-semibold">
-									Status
-								</h3>
-
-								<div className="space-y-2">
-									<Controller
-										name="isPublished"
-										control={control}
-										render={({ field }) => (
-											<div className="flex items-center justify-between rounded-lg border p-4">
-												<div>
-													<p className="font-medium">
-														Published
-													</p>
-													<p className="text-sm text-muted-foreground">
-														Allow this building to
-														be visible and available
-														for users.
-													</p>
-												</div>
-
-												<Switch
-													checked={
-														field.value ?? false
-													}
-													onCheckedChange={
-														field.onChange
-													}
-												/>
-											</div>
-										)}
-									/>
-
-									{errors.isPublished && (
-										<p className="text-sm text-destructive">
-											{errors.isPublished.message}
-										</p>
-									)}
-								</div>
-							</div>
+							
 						</div>
 					</CardContent>
 
