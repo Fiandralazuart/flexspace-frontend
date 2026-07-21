@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useDetailSpace from "./useDetailSpace";
 import ImageTab from "./ImageTab";
 import DetailsTab from "./DetailsTab";
+import DeviceTab from "./DeviceTab";
 
 const DetailSpace = () => {
 	const {
@@ -38,6 +39,9 @@ const DetailSpace = () => {
 				<TabsTrigger value="image" className="px-6 text-base">
 					Image
 				</TabsTrigger>
+				<TabsTrigger value="device" className="px-6 text-base">
+					Device
+				</TabsTrigger>
 			</TabsList>
 
 			<TabsContent value="image">
@@ -62,6 +66,11 @@ const DetailSpace = () => {
 					handleUpdateSpace={handleUpdateSpace}
 					isPendingUpdate={isPendingUpdateSpace}
 					isSuccessUpdate={isSuccessUpdateSpace}
+				/>
+			</TabsContent>
+			<TabsContent value="device">
+				<DeviceTab
+					dataSpace={space}
 				/>
 			</TabsContent>
 		</Tabs>

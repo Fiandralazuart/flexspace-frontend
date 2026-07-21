@@ -1,3 +1,5 @@
+import { IDevice } from "./facility";
+
 export interface Province {
 	id: string;
 	name: string;
@@ -32,6 +34,7 @@ interface ISpace {
 	picture: string;
 	pictureId: string;
 	status: string;
+	devices?: IDevice;
 }
 
 interface Params {

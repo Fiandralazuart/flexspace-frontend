@@ -4,6 +4,7 @@ const endpoint = {
 	SPACE: "/space",
 	MEDIA: "/media",
 	REGION: "/region",
+	DEVICE: "/device",
 };
 
 export default endpoint;

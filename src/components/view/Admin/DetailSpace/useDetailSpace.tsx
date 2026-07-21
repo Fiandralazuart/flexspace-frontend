@@ -53,7 +53,7 @@ const useDetailSpace = () => {
 			pictureId: "",
 			status: "ACTIVE", // sesuaikan dengan enum kamu
 			isPublished: false,
-		},
+			},
 	});
 
 	const findOneSpace = async () => {
@@ -91,8 +91,7 @@ const useDetailSpace = () => {
 
 	const handleUpdateSpace = (payload: UpdateSpaceDTO) => {
 		mutateUpdateSpace(payload);
-		console.log(payload);
-	}
+	};
 
 	useEffect(() => {
 		socket.on("spaceUpdated", refetchSpace);
