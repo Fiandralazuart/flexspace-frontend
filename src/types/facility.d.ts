@@ -11,6 +11,10 @@ export interface CreateDevice {
 	serialNumber: string,
 	spaceId: string;
 }
+export interface UpdateDevice {
+    name: string;
+    serialNumber: string;
+}
 
 export enum DeviceStatus {
 	ONLINE = "ONLINE",

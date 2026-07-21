@@ -8,12 +8,17 @@ import { toast } from "sonner";
 import z from "zod";
 
 const updateDeviceSchema = z.object({
-	name: z.string(),
-	serialNumber: z.string(),
-	status: z.enum(["ONLINE", "OFFLINE"]),
+	name: z.string().trim().min(1, "Device name is required"),
+
+	serialNumber: z.string().trim().min(1, "Serial number is required"),
 });
 
 export type UpdateDeviceDTO = z.infer<typeof updateDeviceSchema>;
+
+type UpdateDevicePayload = {
+	id: string;
+	data: UpdateDeviceDTO;
+};
 
 const useDeviceTab = () => {
 	const params = useParams();
@@ -22,12 +27,12 @@ const useDeviceTab = () => {
 		formState: { errors },
 		handleSubmit,
 		reset,
-	} = useForm({
+	} = useForm<UpdateDeviceDTO>({
 		resolver: zodResolver(updateDeviceSchema),
 		defaultValues: {
 			name: "",
-			serialNumber: ""
-		}
+			serialNumber: "",
+		},
 	});
 
 	const findOneDevice = async () => {
@@ -41,13 +46,8 @@ const useDeviceTab = () => {
 		enabled: !params.id,
 	});
 
-
-
-	
-
-	const updateDevice = async (payload: CreateDevice) => {
-		const result = await deviceServices.createDevice(payload);
-		return result;
+	const updateDevice = async ({ id, data }: UpdateDevicePayload) => {
+		return deviceServices.updateDevice(data, id);
 	};
 
 	const {
@@ -57,15 +57,19 @@ const useDeviceTab = () => {
 	} = useMutation({
 		mutationFn: updateDevice,
 		onError: (error) => {
-			toast.error("Failed to create device")
+			toast.error("Failed to create device");
 		},
 		onSuccess: () => {
-			toast.success("Success to create device")
-		}
+			toast.success("Success to create device");
+		},
 	});
 
-	const handleUpdateDevice = (payload: CreateDevice) =>
-		mutateUpdateDevice(payload);
+	const handleUpdateDevice = (id: string, data: UpdateDeviceDTO) => {
+		mutateUpdateDevice({
+			id,
+			data,
+		});
+	};
 
 	return {
 		control,

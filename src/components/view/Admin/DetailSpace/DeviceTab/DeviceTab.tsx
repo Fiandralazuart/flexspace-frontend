@@ -40,7 +40,7 @@ const statusConfig = {
 
 type PropsTypes = {
 	dataSpace: ISpace;
-	refetchSpace: () => void
+	refetchSpace: () => void;
 };
 
 const DeviceTab = (props: PropsTypes) => {
@@ -116,91 +116,104 @@ const DeviceTab = (props: PropsTypes) => {
 				</>
 			) : (
 				<>
-					<Card>
-						<CardHeader className="flex flex-row items-start justify-between">
-							<div>
-								<CardTitle className="text-2xl">
-									Device Configuration
-								</CardTitle>
+					<form
+						onSubmit={handleSubmit((data) => {
+							if (!dataSpace.devices) return;
+							handleUpdateDevice(dataSpace.devices.id, data);
+						})}
+					>
+						<Card>
+							<CardHeader className="flex flex-row items-start justify-between">
+								<div>
+									<CardTitle className="text-2xl">
+										Device Configuration
+									</CardTitle>
 
-								<CardDescription>
-									Manage your device configuration about this
-									space.
-								</CardDescription>
-							</div>
+									<CardDescription>
+										Manage your device configuration about
+										this space.
+									</CardDescription>
+								</div>
 
-							<div className="flex items-center gap-2">
-								<Badge
+								<div className="flex items-center gap-2">
+									<Badge
+										variant="outline"
+										className={currentStatus.className}
+									>
+										{currentStatus.label}
+									</Badge>
+
+									<Button
+										onClick={() =>
+											setDeleteDeviceModal(true)
+										}
+										variant="destructive"
+										size="icon"
+									>
+										<Trash2 className="h-4 w-4" />
+									</Button>
+								</div>
+							</CardHeader>
+
+							<CardContent className="space-y-8">
+								<div className="space-y-4">
+									<div className="space-y-2">
+										<Label>Name</Label>
+
+										<Controller
+											name="name"
+											control={control}
+											render={({ field }) => (
+												<Input
+													{...field}
+													placeholder="Device name"
+												/>
+											)}
+										/>
+
+										{errors.name && (
+											<p className="text-sm text-destructive">
+												{errors.name.message}
+											</p>
+										)}
+									</div>
+
+									<div className="space-y-2">
+										<Label>Serial Number</Label>
+
+										<Controller
+											name="serialNumber"
+											control={control}
+											render={({ field }) => (
+												<Input
+													{...field}
+													placeholder="Serial number"
+												/>
+											)}
+										/>
+
+										{errors.name && (
+											<p className="text-sm text-destructive">
+												{errors.name.message}
+											</p>
+										)}
+									</div>
+								</div>
+							</CardContent>
+
+							<CardFooter className="justify-end gap-2">
+								<Button
+									type="button"
 									variant="outline"
-									className={currentStatus.className}
+									onClick={() => router.push("/admin/spaces")}
 								>
-									{currentStatus.label}
-								</Badge>
-
-								<Button onClick={() => setDeleteDeviceModal(true)} variant="destructive" size="icon">
-									<Trash2 className="h-4 w-4" />
+									Back
 								</Button>
-							</div>
-						</CardHeader>
 
-						<CardContent className="space-y-8">
-							<div className="space-y-4">
-								<div className="space-y-2">
-									<Label>Name</Label>
-
-									<Controller
-										name="name"
-										control={control}
-										render={({ field }) => (
-											<Input
-												{...field}
-												placeholder="Device name"
-											/>
-										)}
-									/>
-
-									{errors.name && (
-										<p className="text-sm text-destructive">
-											{errors.name.message}
-										</p>
-									)}
-								</div>
-
-								<div className="space-y-2">
-									<Label>Serial Number</Label>
-
-									<Controller
-										name="serialNumber"
-										control={control}
-										render={({ field }) => (
-											<Input
-												{...field}
-												placeholder="Serial number"
-											/>
-										)}
-									/>
-
-									{errors.name && (
-										<p className="text-sm text-destructive">
-											{errors.name.message}
-										</p>
-									)}
-								</div>
-							</div>
-						</CardContent>
-
-						<CardFooter className="justify-end gap-2">
-							<Button
-								type="button"
-								variant="outline"
-								onClick={() => router.push("/admin/spaces")}
-							>
-								Back
-							</Button>
-
-							<Button type="submit">Save Changes</Button>
-						</CardFooter>
-					</Card>
+								<Button type="submit">Save Changes</Button>
+							</CardFooter>
+						</Card>
+					</form>
 					<DeleteDeviceModal
 						open={openDeleteDeviceModal}
 						onOpenChange={setDeleteDeviceModal}
