@@ -34,7 +34,7 @@ interface ISpace {
 	picture: string;
 	pictureId: string;
 	status: string;
-	devices?: IDevice;
+	devices?: IDevice | null;
 }
 
 interface Params {

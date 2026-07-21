@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import AddDeviceModal from "./addDeviceModal";
 import { Trash2 } from "lucide-react";
+import DeleteDeviceModal from "./deleteDeviceModal";
 
 const statusConfig = {
 	ONLINE: {
@@ -39,11 +40,12 @@ const statusConfig = {
 
 type PropsTypes = {
 	dataSpace: ISpace;
+	refetchSpace: () => void
 };
 
 const DeviceTab = (props: PropsTypes) => {
 	const router = useRouter();
-	const { dataSpace } = props;
+	const { dataSpace, refetchSpace } = props;
 
 	const {
 		control,
@@ -55,16 +57,14 @@ const DeviceTab = (props: PropsTypes) => {
 		isPendingUpdateDevice,
 		isSuccessUpdateDevice,
 
-		dataDevice,
 		refetchDevice,
 	} = useDeviceTab();
 
 	const currentStatus =
-		statusConfig[status as keyof typeof statusConfig] ??
+		statusConfig[dataSpace.devices?.status as keyof typeof statusConfig] ??
 		statusConfig.OFFLINE;
 
-	console.log(dataSpace.devices);
-
+	console.log(dataSpace.devices?.id);
 	useEffect(() => {
 		if (dataSpace.devices) {
 			reset({
@@ -75,6 +75,7 @@ const DeviceTab = (props: PropsTypes) => {
 	}, [dataSpace.devices, reset]);
 
 	const [openAddDeviceModal, setAddDeviceModal] = useState(false);
+	const [openDeleteDeviceModal, setDeleteDeviceModal] = useState(false);
 	return (
 		<div className="max-w-2xl py-10">
 			{!dataSpace.devices ? (
@@ -110,95 +111,104 @@ const DeviceTab = (props: PropsTypes) => {
 					<AddDeviceModal
 						onOpenChange={setAddDeviceModal}
 						open={openAddDeviceModal}
-						refetchDevice={refetchDevice}
+						refetchSpace={refetchSpace}
 					/>
 				</>
 			) : (
-				<Card>
-					<CardHeader className="flex flex-row items-start justify-between">
-						<div>
-							<CardTitle className="text-2xl">
-								Device Configuration
-							</CardTitle>
+				<>
+					<Card>
+						<CardHeader className="flex flex-row items-start justify-between">
+							<div>
+								<CardTitle className="text-2xl">
+									Device Configuration
+								</CardTitle>
 
-							<CardDescription>
-								Manage your device configuration about this
-								space.
-							</CardDescription>
-						</div>
+								<CardDescription>
+									Manage your device configuration about this
+									space.
+								</CardDescription>
+							</div>
 
-						<div className="flex items-center gap-2">
-							<Badge
+							<div className="flex items-center gap-2">
+								<Badge
+									variant="outline"
+									className={currentStatus.className}
+								>
+									{currentStatus.label}
+								</Badge>
+
+								<Button onClick={() => setDeleteDeviceModal(true)} variant="destructive" size="icon">
+									<Trash2 className="h-4 w-4" />
+								</Button>
+							</div>
+						</CardHeader>
+
+						<CardContent className="space-y-8">
+							<div className="space-y-4">
+								<div className="space-y-2">
+									<Label>Name</Label>
+
+									<Controller
+										name="name"
+										control={control}
+										render={({ field }) => (
+											<Input
+												{...field}
+												placeholder="Device name"
+											/>
+										)}
+									/>
+
+									{errors.name && (
+										<p className="text-sm text-destructive">
+											{errors.name.message}
+										</p>
+									)}
+								</div>
+
+								<div className="space-y-2">
+									<Label>Serial Number</Label>
+
+									<Controller
+										name="serialNumber"
+										control={control}
+										render={({ field }) => (
+											<Input
+												{...field}
+												placeholder="Serial number"
+											/>
+										)}
+									/>
+
+									{errors.name && (
+										<p className="text-sm text-destructive">
+											{errors.name.message}
+										</p>
+									)}
+								</div>
+							</div>
+						</CardContent>
+
+						<CardFooter className="justify-end gap-2">
+							<Button
+								type="button"
 								variant="outline"
-								className={currentStatus.className}
+								onClick={() => router.push("/admin/spaces")}
 							>
-								{currentStatus.label}
-							</Badge>
-
-							<Button variant="destructive" size="icon">
-								<Trash2 className="h-4 w-4" />
+								Back
 							</Button>
-						</div>
-					</CardHeader>
 
-					<CardContent className="space-y-8">
-						<div className="space-y-4">
-							<div className="space-y-2">
-								<Label>Name</Label>
-
-								<Controller
-									name="name"
-									control={control}
-									render={({ field }) => (
-										<Input
-											{...field}
-											placeholder="Device name"
-										/>
-									)}
-								/>
-
-								{errors.name && (
-									<p className="text-sm text-destructive">
-										{errors.name.message}
-									</p>
-								)}
-							</div>
-
-							<div className="space-y-2">
-								<Label>Serial Number</Label>
-
-								<Controller
-									name="serialNumber"
-									control={control}
-									render={({ field }) => (
-										<Input
-											{...field}
-											placeholder="Serial number"
-										/>
-									)}
-								/>
-
-								{errors.name && (
-									<p className="text-sm text-destructive">
-										{errors.name.message}
-									</p>
-								)}
-							</div>
-						</div>
-					</CardContent>
-
-					<CardFooter className="justify-end gap-2">
-						<Button
-							type="button"
-							variant="outline"
-							onClick={() => router.push("/admin/spaces")}
-						>
-							Back
-						</Button>
-
-						<Button type="submit">Save Changes</Button>
-					</CardFooter>
-				</Card>
+							<Button type="submit">Save Changes</Button>
+						</CardFooter>
+					</Card>
+					<DeleteDeviceModal
+						open={openDeleteDeviceModal}
+						onOpenChange={setDeleteDeviceModal}
+						refetchSpace={refetchSpace}
+						name={dataSpace.devices?.name || ""}
+						id={dataSpace.devices?.id || ""}
+					/>
+				</>
 			)}
 		</div>
 	);

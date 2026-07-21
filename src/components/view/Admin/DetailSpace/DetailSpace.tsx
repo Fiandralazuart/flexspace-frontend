@@ -13,6 +13,7 @@ const DetailSpace = () => {
 		isLoadingSpace,
 
 		handleUpdateSpace,
+		refetchSpace,
 		isPendingUpdateSpace,
 		isSuccessUpdateSpace,
 
@@ -71,6 +72,7 @@ const DetailSpace = () => {
 			<TabsContent value="device">
 				<DeviceTab
 					dataSpace={space}
+					refetchSpace={refetchSpace}
 				/>
 			</TabsContent>
 		</Tabs>

@@ -129,6 +129,7 @@ const useDetailSpace = () => {
 		watch,
 
 		dataSpace,
+		refetchSpace,
 		isLoadingSpace,
 		isRefetchingSpace,
 

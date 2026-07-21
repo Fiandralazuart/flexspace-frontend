@@ -22,13 +22,13 @@ import { Label } from "@/components/ui/label";
 interface Props {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
-	refetchDevice: () => void;
+	refetchSpace: () => void;
 }
 
 const AddDeviceModal = ({
 	open,
 	onOpenChange,
-	refetchDevice,
+	refetchSpace,
 }: Props) => {
 	const {
 		handleCreateDevice,
@@ -43,7 +43,7 @@ const AddDeviceModal = ({
 
 	useEffect(() => {
 		if (isSuccessCreateDevice) {
-			refetchDevice();
+			refetchSpace();
 			reset();
 			onOpenChange(false);
 		}

@@ -77,7 +77,6 @@ const useDeviceTab = () => {
 		isPendingUpdateDevice,
 		isSuccessUpdateDevice,
 
-		dataDevice,
 		refetchDevice,
 	};
 };
