@@ -43,6 +43,13 @@ interface Params {
 	search: string;
 }
 
+export interface FacilityParams {
+	page?: number;
+	limit?: number;
+	search?: string;
+	deviceId?: string;
+}
+
 export interface IBuildingPayload {
 	name: string;
 	location: {

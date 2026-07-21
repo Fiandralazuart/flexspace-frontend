@@ -1,19 +1,17 @@
-
-
 export interface IDevice {
 	id: string;
 	name: string;
-	serialNumber: string,
-	status: DeviceStatus
+	serialNumber: string;
+	status: DeviceStatus;
 }
 export interface CreateDevice {
 	name: string;
-	serialNumber: string,
+	serialNumber: string;
 	spaceId: string;
 }
 export interface UpdateDevice {
-    name: string;
-    serialNumber: string;
+	name: string;
+	serialNumber: string;
 }
 
 export enum DeviceStatus {
@@ -21,3 +19,39 @@ export enum DeviceStatus {
 	OFFLINE = "OFFLINE",
 	CONNECTING = "CONNECTING",
 }
+
+export interface IFacility {
+	id: string;
+	name: string;
+	type: FacilityType;
+	channel: number;
+	status: FacilityStatus;
+	value?: number | null;
+
+	deviceId: string;
+
+	createdBy: string;
+	updatedBy?: string | null;
+
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface CreateFacility {
+	name: string;
+	type: FacilityType;
+	channel: number;
+	deviceId: string;
+}
+
+export interface UpdateFacility {
+	name: string;
+	type: FacilityType;
+	channel: number;
+}
+
+export interface UpdateFacilityStatus {
+	status: FacilityStatus;
+	value?: number | null;
+}
+

@@ -6,6 +6,7 @@ import useDetailSpace from "./useDetailSpace";
 import ImageTab from "./ImageTab";
 import DetailsTab from "./DetailsTab";
 import DeviceTab from "./DeviceTab";
+import FacilityTab from "./FacilityTab";
 
 const DetailSpace = () => {
 	const {
@@ -43,6 +44,9 @@ const DetailSpace = () => {
 				<TabsTrigger value="device" className="px-6 text-base">
 					Device
 				</TabsTrigger>
+				<TabsTrigger value="facility" className="px-6 text-base">
+					Facility
+				</TabsTrigger>
 			</TabsList>
 
 			<TabsContent value="image">
@@ -70,10 +74,10 @@ const DetailSpace = () => {
 				/>
 			</TabsContent>
 			<TabsContent value="device">
-				<DeviceTab
-					dataSpace={space}
-					refetchSpace={refetchSpace}
-				/>
+				<DeviceTab dataSpace={space} refetchSpace={refetchSpace} />
+			</TabsContent>
+			<TabsContent value="facility">
+				<FacilityTab deviceId={space.devices?.id} />
 			</TabsContent>
 		</Tabs>
 	);
