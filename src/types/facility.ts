@@ -55,3 +55,12 @@ export interface UpdateFacilityStatus {
 	value?: number | null;
 }
 
+export enum FacilityType {
+	LIGHT = "LIGHT",
+	AIR_CONDITIONER = "AIR_CONDITIONER",
+}
+
+export enum FacilityStatus {
+	ON = "ON",
+	OFF = "OFF",
+}

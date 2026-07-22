@@ -1,6 +1,7 @@
 "use client";
 
 import { socket } from "@/lib/socket";
+import facilityServices from "@/services/facility.service";
 import spaceServices from "@/services/space.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -9,6 +10,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import useFacilityTab, { useFacility } from "./FacilityTab/useFacilityTab";
 
 export const updateSpaceSchema = z.object({
 	buildingId: z.string().min(1, "Building is required"),
@@ -53,7 +55,7 @@ const useDetailSpace = () => {
 			pictureId: "",
 			status: "ACTIVE", // sesuaikan dengan enum kamu
 			isPublished: false,
-			},
+		},
 	});
 
 	const findOneSpace = async () => {
@@ -120,6 +122,9 @@ const useDetailSpace = () => {
 			isPublished: space.isPublished,
 		});
 	}, [space, reset]);
+
+	const deviceId = dataSpace?.data?.data?.devices?.id;
+	useFacility(deviceId);
 
 	return {
 		control,

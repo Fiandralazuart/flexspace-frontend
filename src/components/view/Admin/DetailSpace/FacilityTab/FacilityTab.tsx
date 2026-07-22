@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import DataTable from "@/components/common/DataTable";
 import { Badge } from "@/components/ui/badge";
@@ -17,25 +17,27 @@ import { Lightbulb, Snowflake, MoreHorizontal } from "lucide-react";
 
 import { COLUMN_FACILITY } from "./facility.constant";
 import useFacilityTab from "./useFacilityTab";
-import { IFacility } from "@/types/facility";
+import { FacilityStatus, FacilityType, IFacility } from "@/types/facility";
+import useQueryParams from "@/components/hooks/useQueryParams";
+import useDebounce from "@/components/hooks/useDebounce";
+import AddFacilityModal from "./AddFacilityModal.tsx";
+import DeleteFacilityModal from "./DeleteFacilityModal.tsx";
 
-export enum FacilityType {
-	LIGHT = "LIGHT",
-	AIR_CONDITIONER = "AIR_CONDITIONER",
-}
-
-export enum FacilityStatus {
-	ON = "ON",
-	OFF = "OFF",
-}
 interface PropsTypes {
 	deviceId: string;
+	type: FacilityType;
 }
 
-const FacilityTab = ({ deviceId }: PropsTypes) => {
+const FacilityTab = (props: PropsTypes) => {
+	const { deviceId, type } = props;
 	const { dataFacility, isLoadingFacility, refetchFacility } = useFacilityTab(
 		{ deviceId },
 	);
+
+	const { search, updateQuery } = useQueryParams();
+	const debounce = useDebounce();
+	const router = useRouter();
+	const pathname = usePathname();
 
 	const renderCell = useCallback(
 		(
@@ -48,9 +50,9 @@ const FacilityTab = ({ deviceId }: PropsTypes) => {
 						<div className="flex items-center gap-3">
 							<div className="rounded-lg bg-primary/10 p-2">
 								{facility.type === FacilityType.LIGHT ? (
-									<Lightbulb className="h-4 w-4 text-yellow-500" />
+									<Lightbulb className="h-4 w-4 " />
 								) : (
-									<Snowflake className="h-4 w-4 text-sky-500" />
+									<Snowflake className="h-4 w-4 " />
 								)}
 							</div>
 
@@ -92,9 +94,23 @@ const FacilityTab = ({ deviceId }: PropsTypes) => {
 							</DropdownMenuTrigger>
 
 							<DropdownMenuContent align="end">
-								<DropdownMenuItem>Edit</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={() => {
+										router.push(
+											`${pathname}/${facility.id}`,
+										);
+									}}
+								>
+									Edit
+								</DropdownMenuItem>
 
-								<DropdownMenuItem className="text-red-500">
+								<DropdownMenuItem
+									onClick={() => {
+										setSelectedFacility(facility);
+										setOpenDeleteFacility(true);
+									}}
+									className="text-red-500"
+								>
 									Delete
 								</DropdownMenuItem>
 							</DropdownMenuContent>
@@ -108,17 +124,49 @@ const FacilityTab = ({ deviceId }: PropsTypes) => {
 		[],
 	);
 
+	const [openAddFacilityModal, setAddFacilityModal] = useState(false);
+	const [openDeleteFacility, setOpenDeleteFacility] = useState(false);
+	const [selectedFacility, setSelectedFacility] = useState<IFacility | null>(
+		null,
+	);
+
 	return (
-		<DataTable<IFacility>
-			title="Facility List"
-			description="Manage smart facilities connected to this device."
-			data={dataFacility}
-			columns={COLUMN_FACILITY}
-			renderCell={renderCell}
-			loading={isLoadingFacility}
-			addLabel="Add Facility"
-			onAdd={() => {}}
-		/>
+		<>
+			<DataTable<IFacility>
+				title="Facility List"
+				description="Manage smart facilities connected to this device."
+				data={dataFacility}
+				columns={COLUMN_FACILITY}
+				renderCell={renderCell}
+				loading={isLoadingFacility}
+				search={search}
+				searchPlaceholder="Search facility..."
+				onSearch={(value) =>
+					debounce(() => {
+						updateQuery({
+							search: value,
+							page: 1,
+						});
+					}, 500)
+				}
+				addLabel="Add Facility"
+				onAdd={() => setAddFacilityModal(true)}
+			/>
+			<AddFacilityModal
+				open={openAddFacilityModal}
+				onOpenChange={setAddFacilityModal}
+				refetchFacility={refetchFacility}
+				deviceId={deviceId}
+				type={type}
+			/>
+			<DeleteFacilityModal
+				open={openDeleteFacility}
+				onOpenChange={setOpenDeleteFacility}
+				refetchFacility={refetchFacility}
+				name={selectedFacility?.name ?? ""}
+				id={selectedFacility?.id ?? ""}
+			/>
+		</>
 	);
 };
 

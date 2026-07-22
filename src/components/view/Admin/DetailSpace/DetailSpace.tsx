@@ -8,6 +8,7 @@ import DetailsTab from "./DetailsTab";
 import DeviceTab from "./DeviceTab";
 import FacilityTab from "./FacilityTab";
 
+
 const DetailSpace = () => {
 	const {
 		dataSpace,
@@ -77,7 +78,10 @@ const DetailSpace = () => {
 				<DeviceTab dataSpace={space} refetchSpace={refetchSpace} />
 			</TabsContent>
 			<TabsContent value="facility">
-				<FacilityTab deviceId={space.devices?.id} />
+				<FacilityTab
+					deviceId={space.devices?.id}
+					type={space.devices?.type}
+				/>
 			</TabsContent>
 		</Tabs>
 	);

@@ -64,7 +64,6 @@ const DeviceTab = (props: PropsTypes) => {
 		statusConfig[dataSpace.devices?.status as keyof typeof statusConfig] ??
 		statusConfig.OFFLINE;
 
-	console.log(dataSpace.devices?.id);
 	useEffect(() => {
 		if (dataSpace.devices) {
 			reset({
