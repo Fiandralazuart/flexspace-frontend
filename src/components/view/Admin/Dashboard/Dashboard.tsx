@@ -2,6 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import OccupancyDashboard from "./OccupancyAnaliticTab/OccupancyAnaliticTab";
+import UpdateHandle from "@/components/common/UpdateHandle";
 
 // import AssetDashboard from "./asset/AssetDashboard";
 // import BookingDashboard from "./booking/BookingDashboard";
@@ -37,17 +38,17 @@ const Dashboard = () => {
 			</TabsContent>
 
 			<TabsContent value="asset">
-				<p>Testing Page</p>
+				<UpdateHandle />
 				{/* <AssetDashboard /> */}
 			</TabsContent>
 
 			<TabsContent value="energy">
-				<p>Testing Page</p>
+				<UpdateHandle />
 				{/* <EnergyDashboard /> */}
 			</TabsContent>
 
 			<TabsContent value="booking">
-				<p>Testing Page</p>
+				<UpdateHandle />
 				{/* <BookingDashboard /> */}
 			</TabsContent>
 		</Tabs>
