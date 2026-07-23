@@ -9,7 +9,7 @@ import UpdateHandle from "@/components/common/UpdateHandle";
 // import EnergyDashboard from "./energy/EnergyDashboard";
 // import OccupancyDashboard from "./occupancy/OccupancyDashboard";
 
-const Dashboard = () => {
+const Analytic = () => {
 	return (
 		<Tabs
 			defaultValue="occupancy"
@@ -55,4 +55,4 @@ const Dashboard = () => {
 	);
 };
 
-export default Dashboard;
+export default Analytic;

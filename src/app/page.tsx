@@ -1,13 +1,13 @@
 import UpdateHandle from "@/components/common/UpdateHandle";
+import LandingPage from "@/components/view/LandingPage";
 import AuthLayout from "@/layouts/AuthLayout";
+import DashboardLayout from "@/layouts/DashboardLayout";
 import Image from "next/image";
 
 export default function Home() {
 	return (
-		<AuthLayout>
-			<div className="min-h-svh flex items-center justify-center">
-				<UpdateHandle />
-			</div>
-		</AuthLayout>
+		<div className="flex justify-center items-center min-h-svh">
+			<LandingPage />
+		</div>
 	);
 }

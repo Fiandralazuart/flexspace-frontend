@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-import Building from "@/components/view/Admin/Buildings";
-import Dashboard from "@/components/view/Admin/Dashboard/Dashboard";
+import UpdateHandle from "@/components/common/UpdateHandle";
 
 
 export const metadata: Metadata = {
@@ -8,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardPage() {
-	return <Dashboard />
+	return <UpdateHandle />
 }

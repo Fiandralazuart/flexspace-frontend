@@ -25,6 +25,12 @@ export const adminSidebar: SidebarItem[] = [
 		icon: LayoutDashboard,
 	},
 	{
+		key: "analytics",
+		label: "Analytics",
+		href: "/admin/analytics",
+		icon: ChartColumn,
+	},
+	{
 		key: "buildings",
 		label: "Buildings",
 		href: "/admin/buildings",
@@ -53,12 +59,6 @@ export const adminSidebar: SidebarItem[] = [
 		label: "Users",
 		href: "/admin/users",
 		icon: Users,
-	},
-	{
-		key: "analytics",
-		label: "Analytics",
-		href: "/admin/analytics",
-		icon: ChartColumn,
 	},
 	{
 		key: "settings",

@@ -1,11 +1,10 @@
+import Analytic from "@/components/view/Admin/Analytic";
 import { Metadata } from "next";
-import UpdateHandle from "@/components/common/UpdateHandle";
-
 
 export const metadata: Metadata = {
-	title: "Analytics",
+	title: "Analityc Dashboard",
 };
 
-export default function BuildingPage() {
-	return <UpdateHandle />
+export default function DashboardPage() {
+	return <Analytic />;
 }
