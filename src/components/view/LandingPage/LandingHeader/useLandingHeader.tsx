@@ -6,7 +6,7 @@ const useLandingHeader = () => {
 	const dashboardUrl =
 		session?.user?.role?.name === "SUPER_ADMIN"
 			? "/admin/dashboard"
-			: "/user/dashboard";
+			: "/users/dashboard";
 
 	return {
 		isLoading: status === "loading",

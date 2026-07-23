@@ -33,22 +33,24 @@ export async function middleware(request: NextRequest) {
 			return NextResponse.redirect(new URL("/admin/spaces", request.url));
 		}
 	}
-	// if (pathname.startsWith("/member")) {
-	// 	if (!token) {
-	// 		const url = new URL("/auth/login");
-	// 		url.searchParams.set("callbackUrl", encodeURI(request.url));
-	// 		return NextResponse.redirect(url);
-	// 	}
-	// 	if (pathname === "/member") {
-	// 		return NextResponse.redirect("/member");
-	// 	}
-	// }
+	if (pathname.startsWith("/users")) {
+		if (!token) {
+			const url = new URL("/login");
+			url.searchParams.set("callbackUrl", encodeURI(request.url));
+			return NextResponse.redirect(url);
+		}
+		if (token?.user?.role?.name !== "USER") {
+			return NextResponse.redirect(new URL("/", request.url));
+		}
+
+		if (pathname === "/users") {
+			return NextResponse.redirect(new URL("/users/spaces", request.url));
+		}
+	}
 
 	return NextResponse.next(); // <- wajib
 }
 
 export const config = {
-	matcher: ["/login", "/register", "/admin/:path*"],
+	matcher: ["/login", "/register", "/admin/:path*", "/users/:path*"],
 };
-
-// , "/member/:path*"

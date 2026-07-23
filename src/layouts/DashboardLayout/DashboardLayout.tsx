@@ -4,7 +4,7 @@ import { ReactNode, useState } from "react";
 import { Menu, Search } from "lucide-react";
 
 import DashboardLayoutSidebar from "./DashboardLayoutSidebar";
-import { adminSidebar } from "./DashboardLayoutSidebar/DashboardLayoutSidebant.constant";
+import { adminSidebar, userSidebar } from "./DashboardLayoutSidebar/DashboardLayoutSidebant.constant";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,7 +32,7 @@ const DashboardLayout = ({
 	return (
 		<div className="flex h-screen overflow-hidden bg-slate-50">
 			<DashboardLayoutSidebar
-				sidebarItems={type === "admin" ? adminSidebar : adminSidebar}
+				sidebarItems={type === "admin" ? adminSidebar : userSidebar}
 				isOpen={isOpen}
 			/>
 

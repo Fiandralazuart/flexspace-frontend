@@ -1,0 +1,11 @@
+import { Metadata } from "next";
+import UpdateHandle from "@/components/common/UpdateHandle";
+
+
+export const metadata: Metadata = {
+	title: "Analityc Dashboard",
+};
+
+export default function DashboardPage() {
+	return <UpdateHandle />
+}

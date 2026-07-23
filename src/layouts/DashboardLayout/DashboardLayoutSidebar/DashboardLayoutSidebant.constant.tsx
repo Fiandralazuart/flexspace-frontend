@@ -8,6 +8,8 @@ import {
 	Users,
 	ChartColumn,
 	Settings,
+	History,
+	User,
 } from "lucide-react";
 
 export interface SidebarItem {
@@ -65,5 +67,51 @@ export const adminSidebar: SidebarItem[] = [
 		label: "Settings",
 		href: "/admin/settings",
 		icon: Settings,
+	},
+];
+
+export interface SidebarItem {
+	key: string;
+	label: string;
+	href: string;
+	icon: LucideIcon;
+}
+
+export const userSidebar: SidebarItem[] = [
+	{
+		key: "dashboard",
+		label: "Dashboard",
+		href: "/users/dashboard",
+		icon: LayoutDashboard,
+	},
+	{
+		key: "space",
+		label: "Spaces",
+		href: "/users/spaces",
+		icon: Building2,
+	},
+	{
+		key: "assets",
+		label: "Assets",
+		href: "/users/assets",
+		icon: Package,
+	},
+	{
+		key: "bookings",
+		label: "Bookings",
+		href: "/users/bookings",
+		icon: CalendarDays,
+	},
+	{
+		key: "history",
+		label: "History",
+		href: "/users/history",
+		icon: History,
+	},
+	{
+		key: "profile",
+		label: "Profile",
+		href: "/users/profile",
+		icon: User,
 	},
 ];
