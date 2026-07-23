@@ -1,12 +1,13 @@
 "use client";
 
+import { Suspense } from "react";
 import useActivation from "./useActivation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 
-const Activation = () => {
+const ActivationContent = () => {
 	const { isPending, isSuccess } = useActivation();
 
 	if (isPending) {
@@ -88,6 +89,20 @@ const Activation = () => {
 				</div>
 			</div>
 		</div>
+	);
+};
+
+const Activation = () => {
+	return (
+		<Suspense
+			fallback={
+				<div className="flex min-h-screen items-center justify-center bg-slate-50">
+					<Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+				</div>
+			}
+		>
+			<ActivationContent />
+		</Suspense>
 	);
 };
 
