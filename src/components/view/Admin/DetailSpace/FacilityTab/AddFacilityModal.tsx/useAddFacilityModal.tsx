@@ -23,7 +23,7 @@ export const createFacilitySchema = z.object({
 
 export type CreateFacilityDTO = z.infer<typeof createFacilitySchema>;
 
-const useAddFacilityModal = (deviceId: string, type: FacilityType,) => {
+const useAddFacilityModal = (deviceId: string) => {
 	const {
 		control,
 		formState: { errors },

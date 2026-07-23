@@ -6,6 +6,6 @@ export const metadata: Metadata = {
 	title: "Buildings",
 };
 
-export default function Spaces() {
+export default function BuildingPage() {
 	return <Building />
 }

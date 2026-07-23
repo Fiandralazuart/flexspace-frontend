@@ -30,13 +30,13 @@ const DashboardLayout = ({
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
-		<div className="flex min-h-screen bg-slate-50">
+		<div className="flex h-screen overflow-hidden bg-slate-50">
 			<DashboardLayoutSidebar
 				sidebarItems={type === "admin" ? adminSidebar : adminSidebar}
 				isOpen={isOpen}
 			/>
 
-			<main className="flex flex-1 flex-col overflow-hidden">
+			<main className="flex flex-1 flex-col min-w-0 overflow-hidden">
 				{/* Header */}
 				<header className="sticky top-0 z-20 border-b bg-white">
 					<div className="flex h-20 items-center justify-between px-8">
@@ -60,7 +60,7 @@ const DashboardLayout = ({
 					</div>
 				</header>
 
-				<div className="flex-1 overflow-y-auto p-8 py-4">
+				<div className="flex-1 overflow-y-auto min-w-0 p-8 py-4">
 					{/* Main Title */}
 					<div className=" flex items-center justify-between">
 						<div>

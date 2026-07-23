@@ -35,6 +35,7 @@ interface ISpace {
 	pictureId: string;
 	status: string;
 	devices?: IDevice | null;
+	personCount?: number;
 }
 
 interface Params {
@@ -60,8 +61,4 @@ export interface IBuildingPayload {
 	isPublished: boolean;
 }
 
-export {
-	IBuilding,
-	ISpace,
-	Params
-}
+export { IBuilding, ISpace, Params };

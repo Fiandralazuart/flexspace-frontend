@@ -26,7 +26,6 @@ interface Props {
 	onOpenChange: (open: boolean) => void;
 	refetchFacility: () => void;
 	deviceId: string;
-	type: FacilityType;
 }
 
 const facilityTypeLabel: Record<FacilityType, string> = {
@@ -39,7 +38,6 @@ const AddFacilityModal = ({
 	onOpenChange,
 	refetchFacility,
 	deviceId,
-	type,
 }: Props) => {
 	const {
 		control,
@@ -50,7 +48,7 @@ const AddFacilityModal = ({
 
 		isPendingFacility,
 		isSuccessFacility,
-	} = useAddFacilityModal(deviceId, type);
+	} = useAddFacilityModal(deviceId);
 
 	useEffect(() => {
 		if (isSuccessFacility) {

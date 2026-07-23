@@ -1,0 +1,57 @@
+"use client";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import OccupancyDashboard from "./OccupancyAnaliticTab/OccupancyAnaliticTab";
+
+// import AssetDashboard from "./asset/AssetDashboard";
+// import BookingDashboard from "./booking/BookingDashboard";
+// import EnergyDashboard from "./energy/EnergyDashboard";
+// import OccupancyDashboard from "./occupancy/OccupancyDashboard";
+
+const Dashboard = () => {
+	return (
+		<Tabs
+			defaultValue="occupancy"
+			className="space-y-6"
+		>
+			<TabsList>
+				<TabsTrigger value="occupancy">
+					Occupancy
+				</TabsTrigger>
+
+				<TabsTrigger value="asset">
+					Assets
+				</TabsTrigger>
+
+				<TabsTrigger value="energy">
+					Energy
+				</TabsTrigger>
+
+				<TabsTrigger value="booking">
+					Booking
+				</TabsTrigger>
+			</TabsList>
+
+			<TabsContent value="occupancy">
+				<OccupancyDashboard />
+			</TabsContent>
+
+			<TabsContent value="asset">
+				<p>Testing Page</p>
+				{/* <AssetDashboard /> */}
+			</TabsContent>
+
+			<TabsContent value="energy">
+				<p>Testing Page</p>
+				{/* <EnergyDashboard /> */}
+			</TabsContent>
+
+			<TabsContent value="booking">
+				<p>Testing Page</p>
+				{/* <BookingDashboard /> */}
+			</TabsContent>
+		</Tabs>
+	);
+};
+
+export default Dashboard;

@@ -126,6 +126,14 @@ const useDetailSpace = () => {
 	const deviceId = dataSpace?.data?.data?.devices?.id;
 	useFacility(deviceId);
 
+	useEffect(() => {
+		socket.on("occupancyUpdated", refetchSpace);
+
+		return () => {
+			socket.off("occupancyUpdated", refetchSpace);
+		};
+	}, [refetchSpace]);
+
 	return {
 		control,
 		errors,

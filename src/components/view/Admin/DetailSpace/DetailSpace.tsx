@@ -7,7 +7,7 @@ import ImageTab from "./ImageTab";
 import DetailsTab from "./DetailsTab";
 import DeviceTab from "./DeviceTab";
 import FacilityTab from "./FacilityTab";
-
+import { getCameraStatus } from "./FacilityTab/useFacilityTab";
 
 const DetailSpace = () => {
 	const {
@@ -31,6 +31,7 @@ const DetailSpace = () => {
 	}
 
 	const space = dataSpace.data.data;
+	const cameraStatus = getCameraStatus(space.lastDetectedAt);
 
 	return (
 		<Tabs defaultValue="information">
@@ -79,8 +80,11 @@ const DetailSpace = () => {
 			</TabsContent>
 			<TabsContent value="facility">
 				<FacilityTab
-					deviceId={space.devices?.id}
-					type={space.devices?.type}
+					deviceId={space?.devices?.id}
+					type={space?.devices?.type}
+					device={space?.devices}
+					cameraStatus={cameraStatus}
+					space={space}
 				/>
 			</TabsContent>
 		</Tabs>

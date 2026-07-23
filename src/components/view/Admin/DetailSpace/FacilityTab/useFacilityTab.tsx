@@ -24,11 +24,13 @@ const useFacilityTab = ({ deviceId }: Props) => {
 		socket.on("facilityCreated", handleRefetch);
 		socket.on("facilityUpdated", handleRefetch);
 		socket.on("facilityDeleted", handleRefetch);
+		socket.on("occupancyUpdated", handleRefetch);
 
 		return () => {
 			socket.off("facilityCreated", handleRefetch);
 			socket.off("facilityUpdated", handleRefetch);
 			socket.off("facilityDeleted", handleRefetch);
+			socket.off("occupancyUpdated", handleRefetch);
 		};
 	}, [deviceId, refetch]);
 
@@ -53,6 +55,30 @@ export const useFacility = (deviceId?: string, search?: string) => {
 		},
 		enabled: !!deviceId,
 	});
+};
+
+export enum CameraStatus {
+	ONLINE = "ONLINE",
+	DELAYED = "DELAYED",
+	OFFLINE = "OFFLINE",
+}
+
+export const getCameraStatus = (
+	lastDetectedAt: string | null | undefined,
+): CameraStatus => {
+	if (!lastDetectedAt) return CameraStatus.OFFLINE;
+
+	const diff = Date.now() - new Date(lastDetectedAt).getTime();
+
+	if (diff <= 30 * 1000) {
+		return CameraStatus.ONLINE;
+	}
+
+	if (diff <= 2 * 60 * 1000) {
+		return CameraStatus.DELAYED;
+	}
+
+	return CameraStatus.OFFLINE;
 };
 
 export default useFacilityTab;

@@ -6,6 +6,6 @@ export const metadata: Metadata = {
 	title: "Spaces",
 };
 
-export default function Spaces() {
+export default function SpacesPage() {
 	return <SpacesView/>
 }
