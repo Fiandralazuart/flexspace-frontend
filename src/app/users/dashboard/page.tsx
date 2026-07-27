@@ -1,11 +1,13 @@
-import { Metadata } from "next";
-import UpdateHandle from "@/components/common/UpdateHandle";
-
+import { Suspense } from "react";
+import type { Metadata } from "next";
+import Dashboard from "@/components/view/Users/Dashboard";
 
 export const metadata: Metadata = {
-	title: "Analityc Dashboard",
+	title: "Dashboard",
 };
 
-export default function DashboardPage() {
-	return <UpdateHandle />
+export default function userDashboardPage() {
+	return (
+			<Dashboard />
+	);
 }

@@ -26,6 +26,7 @@ export interface IBuilding {
 }
 
 interface ISpace {
+	id?: string;
 	buildingId: string;
 	name: string;
 	description: string;

@@ -10,6 +10,7 @@ import {
 	Settings,
 	History,
 	User,
+	CalendarClock,
 } from "lucide-react";
 
 export interface SidebarItem {
@@ -43,6 +44,12 @@ export const adminSidebar: SidebarItem[] = [
 		label: "Spaces",
 		href: "/admin/spaces",
 		icon: Building2,
+	},
+	{
+		key: "schedules",
+		label: "Schedules",
+		href: "/admin/schedules",
+		icon: CalendarClock,
 	},
 	{
 		key: "bookings",

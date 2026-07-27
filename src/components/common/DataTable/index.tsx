@@ -53,6 +53,8 @@ export default function DataTable<T extends { id: string }>(
 		setSearchValue(search ?? "");
 	}, [search]);
 
+	
+
 	return (
 		<Card className="shadow-sm">
 			<CardHeader className="space-y-4">
