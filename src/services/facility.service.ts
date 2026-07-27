@@ -1,7 +1,7 @@
 import instance from "@/lib/axios/instance";
 import endpoint from "./endpoint";
 import { FacilityParams, Params } from "@/types/space";
-import { CreateFacility, UpdateFacility } from "@/types/facility";
+import { CreateFacility, UpdateFacility, UpdateFacilityStatus } from "@/types/facility";
 
 const facilityServices = {
 	getAllFacility: (params: FacilityParams) =>
@@ -15,6 +15,9 @@ const facilityServices = {
 	getOneFacility: (id: string) => instance.get(`${endpoint.FACILITY}/${id}`),
 	deleteFacility: (id: string) =>
 		instance.delete(`${endpoint.FACILITY}/${id}`),
+	controlFacility: (id: string, payload: UpdateFacilityStatus) => instance.put(`${endpoint.CONTROL}/${id}`, payload),
+	getOnlineDevices: () =>
+		instance.get(`${endpoint.ONLINE}`),
 };
 
 

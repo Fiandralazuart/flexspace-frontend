@@ -8,6 +8,7 @@ import DetailsTab from "./DetailsTab";
 import DeviceTab from "./DeviceTab";
 import FacilityTab from "./FacilityTab";
 import { getCameraStatus } from "./FacilityTab/useFacilityTab";
+import ControlTab from "./ControlTab";
 
 const DetailSpace = () => {
 	const {
@@ -49,6 +50,9 @@ const DetailSpace = () => {
 				<TabsTrigger value="facility" className="px-6 text-base">
 					Facility
 				</TabsTrigger>
+				<TabsTrigger value="control" className="px-6 text-base">
+					Controls
+				</TabsTrigger>
 			</TabsList>
 
 			<TabsContent value="image">
@@ -85,6 +89,14 @@ const DetailSpace = () => {
 					device={space?.devices}
 					cameraStatus={cameraStatus}
 					space={space}
+				/>
+			</TabsContent>
+			<TabsContent value="control">
+				<ControlTab
+					deviceId={space.devices?.id}
+					device={space.devices}
+					space={space}
+					cameraStatus={cameraStatus}
 				/>
 			</TabsContent>
 		</Tabs>

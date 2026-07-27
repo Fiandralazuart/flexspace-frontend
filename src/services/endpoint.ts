@@ -6,6 +6,8 @@ const endpoint = {
 	REGION: "/region",
 	DEVICE: "/device",
 	FACILITY: "/facility",
+	CONTROL: "/control",
+	ONLINE: "devices/online"
 };
 
 export default endpoint;
