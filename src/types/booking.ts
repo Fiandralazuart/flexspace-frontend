@@ -33,6 +33,7 @@ export interface IBooking {
 	space: {
 		id: string;
 		name: string;
+		floor?: number;
 	};
 
 	user: {

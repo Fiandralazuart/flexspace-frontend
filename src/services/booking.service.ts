@@ -8,6 +8,10 @@ const bookingServices = {
 		instance.get(endpoint.BOOKING, {
 			params,
 		}),
+	getAllMe: (params: Params) =>
+		instance.get(`${endpoint.BOOKING}/me`, {
+			params,
+		}),
 
 	createBooking: (payload: IBookingPayload) =>
 		instance.post(endpoint.BOOKING, payload),
