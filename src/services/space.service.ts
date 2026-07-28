@@ -1,6 +1,7 @@
 import instance from "@/lib/axios/instance";
 import endpoint from "./endpoint";
-import { ISpace, Params } from "@/types/space";
+import { ISpace } from "@/types/space";
+import { Params } from "@/types/booking";
 
 const spaceServices = {
 	getAllSpace: (params: Params) =>

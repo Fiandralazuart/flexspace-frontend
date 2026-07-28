@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import UpdateHandle from "@/components/common/UpdateHandle";
+import BookingView from "@/components/view/Admin/Booking";
 
 
 export const metadata: Metadata = {
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function BuildingPage() {
-	return <UpdateHandle />
+	return <BookingView />
 }

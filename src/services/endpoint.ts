@@ -8,7 +8,8 @@ const endpoint = {
 	FACILITY: "/facility",
 	CONTROL: "/control",
 	ONLINE: "devices/online",
-	SCHEDULE: "/schedule"
+	SCHEDULE: "/schedule",
+	BOOKING: "/booking"
 };
 
 export default endpoint;
