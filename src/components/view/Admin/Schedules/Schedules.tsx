@@ -27,7 +27,7 @@ export interface Schedule {
 	description?: string;
 	startTime: string;
 	endTime: string;
-	isBookable: boolean;
+	status: "ACTIVE" | "CANCELLED";
 
 	space: {
 		id: string;
@@ -57,6 +57,7 @@ const ScheduleView = () => {
 		schedule: Schedule,
 		key: keyof Schedule | "actions",
 	) => {
+		console.log(schedule, "hi");
 		switch (key) {
 			case "title":
 				return (
@@ -97,18 +98,20 @@ const ScheduleView = () => {
 					</div>
 				);
 
-			case "isBookable":
+			case "status":
 				return (
-					<div className="text-center">
+					<div className="flex justify-center">
 						<Badge
 							variant="outline"
 							className={
-								schedule.isBookable
+								schedule.status === "ACTIVE"
 									? "border-emerald-200 bg-emerald-50 text-emerald-700"
 									: "border-red-200 bg-red-50 text-red-700"
 							}
 						>
-							{schedule.isBookable ? "Bookable" : "Not Bookable"}
+							{schedule.status === "ACTIVE"
+								? "Active"
+								: "Cancelled"}
 						</Badge>
 					</div>
 				);

@@ -23,8 +23,8 @@ export const COLUMN_SCHEDULE: Column<Schedule>[] = [
 		className: "text-center",
 	},
 	{
-		key: "isBookable",
-		title: "Bookable",
+		key: "status",
+		title: "Status",
 		className: "text-center",
 	},
 	{
