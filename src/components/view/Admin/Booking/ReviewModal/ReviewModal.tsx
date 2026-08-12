@@ -104,8 +104,8 @@ const ReviewBookingModal = ({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="w-[95vw] sm:!max-w-[860px] max-h-[88vh] overflow-hidden rounded-3xl p-0">
-				<div className="border-b border-emerald-100 bg-gradient-to-r from-emerald-50 via-white to-emerald-50 px-8 py-6">
+			<DialogContent className="flex w-[95vw] max-h-[88vh] flex-col overflow-hidden rounded-3xl p-0 sm:!max-w-[860px]">
+				<div className="border-b border-emerald-100 bg-gradient-to-r from-emerald-50 via-white to-emerald-50 px-6 py-4">
 					<div className="flex items-start justify-between">
 						<div className="flex items-center gap-5">
 							<div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-emerald-100">
@@ -151,9 +151,9 @@ const ReviewBookingModal = ({
 					</div>
 				</div>
 
-				<div className="space-y-5 bg-slate-50 p-8">
+				<div className="flex-1 space-y-4 overflow-y-auto bg-slate-50 p-6">
 					{/* Summary */}
-					<div className="grid grid-cols-4 gap-4">
+					<div className="grid grid-cols-4 gap-3">
 						<SummaryCard
 							icon={User}
 							title="Booked By"
@@ -169,23 +169,41 @@ const ReviewBookingModal = ({
 						<SummaryCard
 							icon={Clock3}
 							title="Start Time"
-							value={new Date(booking.startTime).toLocaleString(
-								"id-ID",
-							)}
+							value={`${new Date(
+								booking.startTime,
+							).toLocaleDateString("id-ID", {
+								day: "2-digit",
+								month: "short",
+								year: "numeric",
+							})} • ${new Date(
+								booking.startTime,
+							).toLocaleTimeString("id-ID", {
+								hour: "2-digit",
+								minute: "2-digit",
+							})} WIB`}
 						/>
 
 						<SummaryCard
 							icon={Clock3}
 							title="End Time"
-							value={new Date(booking.endTime).toLocaleString(
-								"id-ID",
-							)}
+							value={`${new Date(
+								booking.endTime,
+							).toLocaleDateString("id-ID", {
+								day: "2-digit",
+								month: "short",
+								year: "numeric",
+							})} • ${new Date(
+								booking.endTime,
+							).toLocaleTimeString("id-ID", {
+								hour: "2-digit",
+								minute: "2-digit",
+							})} WIB`}
 						/>
 					</div>
 
 					<ProgressStepper status={booking.status} />
 
-					<div className="grid grid-cols-5 gap-5">
+					<div className="grid grid-cols-5 gap-4">
 						<Card className="col-span-2 border-emerald-100 shadow-none">
 							<CardContent className="flex h-full flex-col p-5">
 								<p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -222,7 +240,7 @@ const ReviewBookingModal = ({
 						</Card>
 
 						<Card className="col-span-3 border-emerald-100 shadow-none">
-							<CardContent className="space-y-5 p-5">
+							<CardContent className="space-y-4 p-4">
 								<div>
 									<Label className="mb-2 block">Space</Label>
 
@@ -350,7 +368,7 @@ const ReviewBookingModal = ({
 					</div>
 				</div>
 
-				<DialogFooter className="border-t bg-white px-8 pb-8">
+				<DialogFooter className="border-t bg-white px-6  mb-2 sm:justify-end">
 					<Button
 						variant="outline"
 						onClick={() => onOpenChange(false)}
