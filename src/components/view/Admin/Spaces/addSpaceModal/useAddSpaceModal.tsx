@@ -73,7 +73,7 @@ const useAddSpaceModal = () => {
 		},
 	});
 
-	const createSpace = async (payload: ISpace) => {
+	const createSpace = async (payload: CreateSpaceDTO) => {
 		return await spaceServices.createSpace(payload);
 	};
 
