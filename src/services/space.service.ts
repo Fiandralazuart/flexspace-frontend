@@ -2,6 +2,7 @@ import instance from "@/lib/axios/instance";
 import endpoint from "./endpoint";
 import { ISpace } from "@/types/space";
 import { Params } from "@/types/booking";
+import { UpdateSpaceDTO } from "@/components/view/Admin/DetailSpace/useDetailSpace";
 
 const spaceServices = {
 	getAllSpace: (params: Params) =>
@@ -10,7 +11,7 @@ const spaceServices = {
 		}),
 	createSpace: (payload: ISpace) =>
 		instance.post(`${endpoint.SPACE}`, payload),
-	updateSpace: (payload: ISpace, id: string) =>
+	updateSpace: (payload: UpdateSpaceDTO, id: string) =>
 		instance.put(`${endpoint.SPACE}/${id}`, payload),
 	getOneSpace: (id: string) => instance.get(`${endpoint.SPACE}/${id}`),
 	deleteSpace: (id: string) =>
