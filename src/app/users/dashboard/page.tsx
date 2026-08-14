@@ -8,6 +8,8 @@ export const metadata: Metadata = {
 
 export default function userDashboardPage() {
 	return (
+		<Suspense fallback={null}>
 			<Dashboard />
+		</Suspense>
 	);
 }
